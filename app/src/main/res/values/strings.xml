@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Blood+</string>
+    <string name="title_activity_donor_maps">Map</string>
+    <string name="title_activity_hospital_maps">Map</string>
+</resources>
