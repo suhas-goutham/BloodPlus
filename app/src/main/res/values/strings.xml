@@ -2,4 +2,20 @@
     <string name="app_name">Blood+</string>
     <string name="title_activity_donor_maps">Map</string>
     <string name="title_activity_hospital_maps">Map</string>
+    <string name="blood_string">Blood Group</string>
+    <string-array name="blood_arrays">
+        <item>A+ve</item>
+        <item>A-ve</item>
+        <item>AB+ve</item>
+        <item>AB-ve</item>
+        <item>B+ve</item>
+        <item>B-ve</item>
+        <item>O+ve</item>
+        <item>O-ve</item>
+    </string-array>
+    <string-array name="gender_arrays">
+    <item>Male</item>
+    <item>Female</item>
+    </string-array>
+
 </resources>

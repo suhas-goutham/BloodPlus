@@ -127,7 +127,7 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
     public void requestAllBlood(){
 
         mMap.clear();
-        mMap.addMarker(new MarkerOptions().position(user).title(ParseUser.getCurrentUser().get("name").toString()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        mMap.addMarker(new MarkerOptions().position(user).title(ParseUser.getCurrentUser().get("name").toString()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).snippet(ParseUser.getCurrentUser().getUsername()));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user,10));
 
         ParseQuery<ParseUser> query=ParseUser.getQuery();
@@ -150,7 +150,7 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
 
                                 LatLng user = new LatLng(ob.getParseGeoPoint("location").getLatitude(),ob.getParseGeoPoint("location").getLongitude());
 
-                                mMap.addMarker(new MarkerOptions().position(user).title(ob.get("name").toString()+"("+ob.get("blood_grp")+")"));
+                                mMap.addMarker(new MarkerOptions().position(user).title(ob.get("name").toString()+"("+ob.get("blood_grp")+")").snippet(ob.getUsername()));
                             }
                         }
 
@@ -192,17 +192,45 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Log.i("Text",marker.getSnippet());
+
+                if(!marker.getSnippet().equals(ParseUser.getCurrentUser().getUsername())) {
+
+                    Log.i("Click","RedMap");
+                    Intent intent = new Intent(getApplicationContext(), ProfileUserActivity.class);
+                    intent.putExtra("userId", marker.getSnippet());
+                    startActivity(intent);
+                    Log.i("Click","RedMapEnd");
+
+                }else{
+                    Log.i("Click","GreenMap");
+                }
+            }
+        });
+
+/*
 //start
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+
+                Log.i("Text",marker.getSnippet());
+
+                    Intent intent = new Intent(getApplicationContext(), ProfileUserActivity.class);
+                    intent.putExtra("userId", marker.getSnippet());
+                    startActivity(intent);
 
 
                 return false;
             }
         });
 //end
-
+*/
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
@@ -289,7 +317,7 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
 
         }
 
-        if(getIntent().getStringExtra("intentType").equals("filter")){
+        if(getIntent().getStringExtra("intentType")!=null && getIntent().getStringExtra("intentType").equals("filter")){
             Log.i("Intent","Filter");
             requestBlood();
         }else{

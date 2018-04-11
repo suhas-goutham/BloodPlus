@@ -8,6 +8,7 @@
          location permissions for the 'MyLocation' functionality. 
     -->
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -28,10 +29,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" android:parentActivityName=".MainActivity" />
-        <activity android:name=".RegisterActivity" android:parentActivityName=".MainActivity" />
-        <activity android:name=".DonorRegisterActivity" android:parentActivityName=".RegisterActivity"/>
-        <activity android:name=".HospitalRegisterActivity" android:parentActivityName=".RegisterActivity"/>
+        <activity
+            android:name=".LoginActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".RegisterActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".DonorRegisterActivity"
+            android:parentActivityName=".RegisterActivity" />
+        <activity
+            android:name=".HospitalRegisterActivity"
+            android:parentActivityName=".RegisterActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -46,13 +55,14 @@
 
         <activity
             android:name=".DonorMapsActivity"
-            android:parentActivityName=".LoginActivity"
-            android:label="@string/title_activity_donor_maps" />
+            android:label="@string/title_activity_donor_maps"
+            android:parentActivityName=".LoginActivity" />
         <activity
             android:name=".HospitalMapsActivity"
-            android:parentActivityName=".LoginActivity"
-            android:label="@string/title_activity_hospital_maps" />
-        <activity android:name=".FilterBloodActivity"></activity>
+            android:label="@string/title_activity_hospital_maps"
+            android:parentActivityName=".LoginActivity" />
+        <activity android:name=".FilterBloodActivity" />
+        <activity android:name=".ProfileUserActivity" android:parentActivityName=".HospitalMapsActivity"></activity>
     </application>
 
 </manifest>

@@ -28,7 +28,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnKeyListen
     EditText password;
     String loginText;
     String passwordText;
-    String userType;
+    String userType="donor";
+
 
     ConstraintLayout constraintLayout;
     ImageView imageView;
@@ -48,7 +49,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnKeyListen
     @Override
     public void onClick(View v) {
 
-        if(v.getId()==R.id.backgroundConstraint || v.getId()==R.id.bloodImage || v.getId()==R.id.switch1){
+        if(v.getId()==R.id.backgroundConstraint || v.getId()==R.id.bloodImage || v.getId()==R.id.donorText || v.getId()==R.id.hospitalText){
 
             InputMethodManager inputMethodManager=(InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
@@ -64,7 +65,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnKeyListen
 
 
 
-        userType="donor";
 
         if(userTypeSwitch.isChecked()){
             userType="hospital";
@@ -80,32 +80,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnKeyListen
                         Toast.makeText(getApplicationContext(), "Welcome," + user.get("name"), Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(getApplicationContext(), DonorMapsActivity.class);
                         startActivity(intent);
-
-//start
-                        Intent donorIntent = new Intent(getApplicationContext(),MainActivity.class);
-                        donorIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                        PendingIntent donorPendingIntent =
-                                PendingIntent.getActivity(getApplicationContext(), 0,donorIntent, 0);
-
-                        Intent donor1Intent = new Intent(getApplicationContext(),LoginActivity.class);
-
-                        donorIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                        PendingIntent donor1PendingIntent =
-                                PendingIntent.getActivity(getApplicationContext(), 0,donor1Intent, 0);
-
-
-                        NotificationCompat.Builder mBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(getApplicationContext()).
-                                setSmallIcon(R.drawable.blood_image).
-                                setContentTitle("Accept/Reject").
-                                setContentText("We want your blood").
-                                addAction(R.drawable.blood_image,"Accept",donorPendingIntent).
-                                addAction(R.drawable.blood_image,"Reject",donor1PendingIntent);
-
-                        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
-                        notificationManager.notify(0, mBuilder.build());
-
-//end
 
                     } else {
                         Toast.makeText(getApplicationContext(), "Invalid Username/Password/UserType", Toast.LENGTH_LONG).show();
