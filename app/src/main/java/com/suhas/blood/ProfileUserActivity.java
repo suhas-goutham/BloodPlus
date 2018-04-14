@@ -21,8 +21,10 @@ import android.widget.Toast;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.List;
 
@@ -30,7 +32,7 @@ import static android.R.attr.dial;
 
 public class ProfileUserActivity extends AppCompatActivity {
 
-    String name = "a", age = "a", bloodGrp = "a", contact = "a";
+    String name = "a", age = "a", bloodGrp = "a", contact = "a",username="a";
     ParseUser userProfile;
     Intent intent;
 
@@ -97,6 +99,30 @@ public class ProfileUserActivity extends AppCompatActivity {
 
 */
 
+        ParseQuery<ParseObject> query=ParseQuery.getQuery("Request");
+        query.whereEqualTo("username",username);
+
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if(e==null){
+                    if(objects.size()==1){
+                        objects.get(0).put("requestStatus",true);
+                        objects.get(0).saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if(e==null){
+                                    Toast.makeText(getApplicationContext(),"Done",Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Log.i("Error","Save error ");
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
     }
 
     @Override
@@ -137,6 +163,7 @@ public class ProfileUserActivity extends AppCompatActivity {
                         for(ParseUser ob:objects){
                             Log.i("Break Profile","6");
                                 userProfile=ob;
+                                username=ob.getUsername();
                                 name=ob.get("name").toString();
                                 age=ob.get("age").toString();
                                 bloodGrp=ob.get("blood_grp").toString();

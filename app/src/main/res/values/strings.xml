@@ -14,8 +14,8 @@
         <item>O-ve</item>
     </string-array>
     <string-array name="gender_arrays">
-    <item>Male</item>
-    <item>Female</item>
+        <item>Male</item>
+        <item>Female</item>
     </string-array>
 
 </resources>

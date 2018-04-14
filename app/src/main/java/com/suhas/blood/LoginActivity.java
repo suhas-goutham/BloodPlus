@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnKeyListen
                     if (user != null && user.get("userType").equals("donor")) {
 
                         Toast.makeText(getApplicationContext(), "Welcome," + user.get("name"), Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(getApplicationContext(), DonorMapsActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), DonorActivity.class);
                         startActivity(intent);
 
                     } else {

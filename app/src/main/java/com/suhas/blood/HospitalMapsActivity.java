@@ -175,6 +175,7 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
     }
 
     @Override
@@ -183,7 +184,37 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
 
         if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
             if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
+                {
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
+                    Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+                    user= new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+                    geoPoint=new ParseGeoPoint(lastKnownLocation.getLatitude(),lastKnownLocation.getLongitude());
+
+                    ParseUser.getCurrentUser().put("location",geoPoint);
+                    ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if(e==null){
+
+                                Log.i("Hospital location","Saved successfully");
+                            }else{
+                                Log.i("Hospital location","Failed");
+                            }
+                        }
+                    });
+
+
+                    if(getIntent().getStringExtra("intentType").equals("filter")){
+                        Log.i("Intent","Filter");
+                        requestBlood();
+                    }else{
+                        Log.i("Intent","Login");
+                        requestAllBlood();
+                    }
+
+                }
             }
         }
     }
@@ -193,44 +224,6 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                Log.i("Text",marker.getSnippet());
-
-                if(!marker.getSnippet().equals(ParseUser.getCurrentUser().getUsername())) {
-
-                    Log.i("Click","RedMap");
-                    Intent intent = new Intent(getApplicationContext(), ProfileUserActivity.class);
-                    intent.putExtra("userId", marker.getSnippet());
-                    startActivity(intent);
-                    Log.i("Click","RedMapEnd");
-
-                }else{
-                    Log.i("Click","GreenMap");
-                }
-            }
-        });
-
-/*
-//start
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-
-                Log.i("Text",marker.getSnippet());
-
-                    Intent intent = new Intent(getApplicationContext(), ProfileUserActivity.class);
-                    intent.putExtra("userId", marker.getSnippet());
-                    startActivity(intent);
-
-
-                return false;
-            }
-        });
-//end
-*/
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
@@ -254,15 +247,6 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
                     }
                 });
 
-                if(getIntent().getStringExtra("intentType").equals("filter")){
-                    Log.i("Intent","Filter");
-                    requestBlood();
-                }else{
-                    Log.i("Intent","Login");
-                    requestAllBlood();
-                }
-
-
             }
 
             @Override
@@ -281,9 +265,18 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
             }
         };
 
+
         if (Build.VERSION.SDK_INT < 23) {
 
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
+
+            if(getIntent().getStringExtra("intentType").equals("filter")){
+                Log.i("Intent","Filter");
+                requestBlood();
+            }else{
+                Log.i("Intent","Login");
+                requestAllBlood();
+            }
 
         } else {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -293,6 +286,8 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
             } else {
 
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
+
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
                 user= new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
@@ -317,13 +312,39 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
 
         }
 
-        if(getIntent().getStringExtra("intentType")!=null && getIntent().getStringExtra("intentType").equals("filter")){
-            Log.i("Intent","Filter");
-            requestBlood();
-        }else{
-            Log.i("Intent","Login");
-            requestAllBlood();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            if(getIntent().getStringExtra("intentType")!=null && getIntent().getStringExtra("intentType").equals("filter")){
+                Log.i("Intent","Filter");
+                requestBlood();
+            }else{
+                Log.i("Intent","Login");
+                requestAllBlood();
+            }
+
+
         }
+
+
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Log.i("Text",marker.getSnippet());
+
+                if(!marker.getSnippet().equals(ParseUser.getCurrentUser().getUsername())) {
+
+                    Log.i("Click","RedMap");
+                    Intent intent = new Intent(getApplicationContext(), ProfileUserActivity.class);
+                    intent.putExtra("userId", marker.getSnippet());
+                    startActivity(intent);
+                    Log.i("Click","RedMapEnd");
+
+                }else{
+                    Log.i("Click","GreenMap");
+                }
+            }
+        });
 
     }
 }
