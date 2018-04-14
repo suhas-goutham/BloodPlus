@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -121,6 +122,13 @@ public class DonorRegisterActivity extends AppCompatActivity implements View.OnK
                                 }
                             }
                         });
+
+                        ParseObject ob=new ParseObject("Request");
+
+                        ob.put("username",ParseUser.getCurrentUser().getUsername());
+                        ob.put("requestStatus",false);
+
+                        ob.saveInBackground();
 
                         Toast.makeText(getApplicationContext(), "Donor Registered: " + name_s, Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);

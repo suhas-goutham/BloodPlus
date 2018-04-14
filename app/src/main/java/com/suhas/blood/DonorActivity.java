@@ -36,14 +36,12 @@ public class DonorActivity extends AppCompatActivity {
 
         final TextView t4=(TextView) findViewById(R.id.textView4);
 
-        /*
         ParseObject ob=new ParseObject("Request");
 
         ob.put("username",ParseUser.getCurrentUser().getUsername());
         ob.put("requestStatus",false);
 
         ob.saveInBackground();
-        */
 
         final ParseQuery<ParseObject> query=ParseQuery.getQuery("Request");
         query.whereEqualTo("username",ParseUser.getCurrentUser().getUsername());
@@ -51,24 +49,11 @@ public class DonorActivity extends AppCompatActivity {
         Intent donorIntent = new Intent(getApplicationContext(),MainActivity.class);
         donorIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        PendingIntent donorPendingIntent =
+        final PendingIntent donorPendingIntent =
                 PendingIntent.getActivity(getApplicationContext(), 0,donorIntent, 0);
 
-        Intent donor1Intent = new Intent(getApplicationContext(),LoginActivity.class);
+        final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
 
-        donorIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent donor1PendingIntent =
-                PendingIntent.getActivity(getApplicationContext(), 0,donor1Intent, 0);
-
-
-        NotificationCompat.Builder mBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(getApplicationContext()).
-                setSmallIcon(R.drawable.blood_image).
-                setContentTitle("Request for blood").
-                setContentText("Do you accept to donate your blood to "+ParseUser.getCurrentUser().get("name")+"hospital?").
-                addAction(R.drawable.blood_image,"Accept",donorPendingIntent);
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
-        notificationManager.notify(0, mBuilder.build());
 
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -81,10 +66,16 @@ public class DonorActivity extends AppCompatActivity {
                         if(e==null){
                             if(objects.size()>0){
                                 if(objects.get(0).get("requestStatus").equals(true)){
+
+                                    NotificationCompat.Builder mBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(getApplicationContext()).
+                                            setSmallIcon(R.drawable.blood_image).
+                                            setContentTitle("Request for blood").
+                                            setContentText("Do you accept to donate your blood to "+objects.get(0).get("hospitalName")+" hospital?").
+                                            addAction(R.drawable.blood_image,"Accept",donorPendingIntent);
+
                                     timer.cancel();
                                     t4.setText("Got notification");
-
-
+                                    notificationManager.notify(0, mBuilder.build());
 
                                 }
                             }

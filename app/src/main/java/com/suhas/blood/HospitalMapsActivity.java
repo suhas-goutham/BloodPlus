@@ -107,7 +107,8 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
 
                             LatLng user = new LatLng(ob.getParseGeoPoint("location").getLatitude(),ob.getParseGeoPoint("location").getLongitude());
 
-                            mMap.addMarker(new MarkerOptions().position(user).title(ob.get("name").toString()+"("+ob.get("blood_grp")+")"));
+                            mMap.addMarker(new MarkerOptions().position(user).title(ob.get("name").toString()+"("+ob.get("blood_grp")+")").snippet(ob.getUsername()));
+                                
 
                             }
                         }
