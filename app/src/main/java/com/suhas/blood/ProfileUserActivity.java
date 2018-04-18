@@ -74,13 +74,18 @@ public class ProfileUserActivity extends AppCompatActivity {
         ParseQuery<ParseObject> query=ParseQuery.getQuery("Request");
         query.whereEqualTo("username",username);
 
+
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
+
                 if(e==null){
-                    if(objects.size()==1){
+
+                    if(objects.size()==1 && objects.get(0).get("requestStatus").equals(false)){
+
                         objects.get(0).put("requestStatus",true);
                         objects.get(0).put("hospitalName",ParseUser.getCurrentUser().get("name"));
+                        objects.get(0).put("hospitalGeoPoint",ParseUser.getCurrentUser().get("location"));
                         objects.get(0).saveInBackground(new SaveCallback() {
                             @Override
                             public void done(ParseException e) {
@@ -88,9 +93,12 @@ public class ProfileUserActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(),"Done",Toast.LENGTH_SHORT).show();
                                 }else{
                                     Log.i("Error","Save error ");
+
                                 }
                             }
                         });
+                    }else{
+                        Toast.makeText(getApplicationContext(),"User already in action",Toast.LENGTH_SHORT).show();
                     }
                 }
             }

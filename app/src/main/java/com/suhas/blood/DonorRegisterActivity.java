@@ -77,7 +77,7 @@ public class DonorRegisterActivity extends AppCompatActivity implements View.OnK
             status=0;
         }
 
-        if(!(password_s.length()>6)){
+        if(!(password_s.length()>=6)){
             Toast.makeText(getApplicationContext(),"Enter password of atleast 6 characters",Toast.LENGTH_SHORT).show();
             status=0;
         }
@@ -125,10 +125,19 @@ public class DonorRegisterActivity extends AppCompatActivity implements View.OnK
 
                         ParseObject ob=new ParseObject("Request");
 
-                        ob.put("username",ParseUser.getCurrentUser().getUsername());
+                        ob.put("username",email_s);
                         ob.put("requestStatus",false);
 
-                        ob.saveInBackground();
+                        ob.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if(e==null){
+                                    Log.i("Request object","saved");
+                                }else{
+                                    Log.i("Request object","Not saved");
+                                }
+                            }
+                        });
 
                         Toast.makeText(getApplicationContext(), "Donor Registered: " + name_s, Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);

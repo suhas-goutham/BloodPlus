@@ -132,8 +132,9 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user,10));
 
         ParseQuery<ParseUser> query=ParseUser.getQuery();
-
         query.whereNear("location",geoPoint);
+
+
 
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override
@@ -148,6 +149,8 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
                                 Double dist=geoPoint.distanceInKilometersTo((ParseGeoPoint) ob.getParseGeoPoint("location"));
 
                                 Double distance=(double) Math.round(dist*10)/10;
+
+                                Log.i("Distance"+ob.get("name").toString(),distance.toString());
 
                                 LatLng user = new LatLng(ob.getParseGeoPoint("location").getLatitude(),ob.getParseGeoPoint("location").getLongitude());
 
@@ -347,5 +350,11 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
             }
         });
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ParseUser.getCurrentUser().logOut();
     }
 }

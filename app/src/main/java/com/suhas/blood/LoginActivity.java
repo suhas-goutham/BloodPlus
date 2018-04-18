@@ -59,11 +59,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnKeyListen
 
     public void login2(View view){
 
+        ParseUser.getCurrentUser().logOut();
+
         loginText=loginId.getText().toString();
         passwordText=password.getText().toString();
-
-
-
 
 
         if(userTypeSwitch.isChecked()){
@@ -82,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnKeyListen
                         startActivity(intent);
 
                     } else {
-                        Toast.makeText(getApplicationContext(), "Invalid Username/Password/UserType", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"Invalid", Toast.LENGTH_LONG).show();
                     }
                 }
             });
@@ -110,6 +109,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnKeyListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        ParseUser.getCurrentUser().logOut();
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
         notificationManager.cancel(0);
