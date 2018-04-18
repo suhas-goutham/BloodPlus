@@ -67,6 +67,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnKeyListen
 
         if(userTypeSwitch.isChecked()){
             userType="hospital";
+        }else{
+            userType="donor";
         }
 
 

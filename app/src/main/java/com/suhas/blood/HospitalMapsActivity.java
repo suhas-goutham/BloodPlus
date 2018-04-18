@@ -331,7 +331,7 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
 
 
 
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+               mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
                 Log.i("Text",marker.getSnippet());
@@ -352,9 +352,4 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ParseUser.getCurrentUser().logOut();
-    }
 }

@@ -53,6 +53,7 @@ public class ProfileUserActivity extends AppCompatActivity {
 
     }
 
+
     private boolean checkPermission(String permission) {
         return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED;
     }

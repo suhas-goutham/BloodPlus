@@ -20,6 +20,7 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.FindCallback;
@@ -43,6 +44,30 @@ public class DonorActivity extends AppCompatActivity {
     TextView name1,age1,gender1,blood1,contact1,previous1,hospital1,date1;
     String names="",ages="",genders="",bloods="",contacts="",previouss="",hospitals="",dates="";
 
+
+    public void goToDonate(View view){
+
+        ParseQuery<ParseObject> query=new ParseQuery<ParseObject>("Request");
+        query.whereEqualTo("username",ParseUser.getCurrentUser().getUsername());
+
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if(e==null){
+                    if(objects.get(0).get("requestStatus").equals(false)){
+
+                        Intent intent=new Intent(getApplicationContext(),DonorMapsActivity.class);
+                        startActivity(intent);
+
+                    }else{
+                        Toast.makeText(getApplicationContext(),"Cannot donate now,please wait for a few days",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
+
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -167,10 +192,16 @@ public class DonorActivity extends AppCompatActivity {
                     if(objects.size()==1){
                         if(objects.get(0).get("finishedDonation").equals(true)){
 
+
+
                             hospitals=objects.get(0).get("hospitalName").toString();
                             dates=objects.get(0).get("date").toString();
+
+                            String date11=dates.substring(4,11);
+                            String date12=dates.substring(30);
+
                             hospital1.setText("Hospital name: "+hospitals);
-                            date1.setText("Date: "+dates);
+                            date1.setText("Date: "+date11+" "+date12);
 
                         }else{
                             previous1.setText("Previous Donation Details: None");
@@ -265,7 +296,8 @@ public class DonorActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ParseUser.getCurrentUser().logOut();
+
+        timer.cancel();
 
     }
 }
