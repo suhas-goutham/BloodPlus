@@ -37,7 +37,11 @@ import com.parse.SaveCallback;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ParseUser.getCurrentUser().logOut();
+        try{
+            ParseUser.getCurrentUser().logOut();
+        }catch (Exception e){
+
+        }
 
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
         

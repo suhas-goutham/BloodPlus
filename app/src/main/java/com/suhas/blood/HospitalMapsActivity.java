@@ -49,6 +49,17 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
 
     private GoogleMap mMap;
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        ParseUser.getCurrentUser().logOut();
+
+        Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -237,19 +248,22 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
                 user=new LatLng(location.getLatitude(),location.getLongitude());
                 geoPoint=new ParseGeoPoint(location.getLatitude(),location.getLongitude());
 
-                ParseUser.getCurrentUser().put("location",geoPoint);
+                if(ParseUser.getCurrentUser()!=null) {
+                    ParseUser.getCurrentUser().put("location", geoPoint);
 
-                ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if(e==null){
+                    ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
 
-                            Log.i("User location","Saved successfully");
-                        }else{
-                            Log.i("User location","Failed");
+                                Log.i("User location", "Saved successfully");
+                            } else {
+                                Log.i("User location", "Failed");
+                            }
                         }
-                    }
-                });
+                    });
+
+                }
 
             }
 
@@ -296,6 +310,7 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
 
                 user= new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
                 geoPoint=new ParseGeoPoint(lastKnownLocation.getLatitude(),lastKnownLocation.getLongitude());
+
 
                 ParseUser.getCurrentUser().put("location",geoPoint);
                 ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {

@@ -127,6 +127,7 @@ public class DonorRegisterActivity extends AppCompatActivity implements View.OnK
 
                         ob.put("username",email_s);
                         ob.put("requestStatus",false);
+                        ob.put("finishedDonation",false);
 
                         ob.saveInBackground(new SaveCallback() {
                             @Override
@@ -156,6 +157,8 @@ public class DonorRegisterActivity extends AppCompatActivity implements View.OnK
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donor_register);
 
+        ParseUser.getCurrentUser().logOut();
+
         name=(EditText) findViewById(R.id.nameText);
         email=(EditText) findViewById(R.id.emailText);
         password=(EditText) findViewById(R.id.passwordText1);
@@ -174,5 +177,11 @@ public class DonorRegisterActivity extends AppCompatActivity implements View.OnK
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
 
+        Intent intent=new Intent(getApplicationContext(),RegisterActivity.class);
+        startActivity(intent);
+    }
 }

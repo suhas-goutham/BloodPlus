@@ -59,10 +59,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnKeyListen
 
     public void login2(View view){
 
-        ParseUser.getCurrentUser().logOut();
-
-        loginText=loginId.getText().toString();
-        passwordText=password.getText().toString();
+        loginText=loginId.getText().toString().trim();
+        passwordText=password.getText().toString().trim();
 
 
         if(userTypeSwitch.isChecked()){
@@ -72,26 +70,46 @@ public class LoginActivity extends AppCompatActivity implements View.OnKeyListen
         }
 
 
-        if(userType.equals("donor")) {
             ParseUser.logInInBackground(loginText, passwordText, new LogInCallback() {
                 @Override
                 public void done(ParseUser user, ParseException e) {
-                    if (user != null && user.get("userType").equals("donor")) {
+                    if(e==null){
+                    if (user != null) {
 
-                        Toast.makeText(getApplicationContext(), "Welcome," + user.get("name"), Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(getApplicationContext(), DonorActivity.class);
-                        startActivity(intent);
+                        if(user.get("userType").equals("donor") && userType.equals("donor")) {
+
+                            Toast.makeText(getApplicationContext(), "Welcome," + user.get("name"), Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(getApplicationContext(), DonorActivity.class);
+                            startActivity(intent);
+                        }else if(user.get("userType").equals("hospital") && userType.equals("hospital")){
+                            Toast.makeText(getApplicationContext(), "Welcome," + user.get("name"), Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(getApplicationContext(), HospitalMapsActivity.class);
+                            intent.putExtra("intentType","login");
+                            startActivity(intent);
+                        }else{
+                            Toast.makeText(getApplicationContext(),"Wrong user type", Toast.LENGTH_LONG).show();
+                            ParseUser.getCurrentUser().logOut();
+                        }
 
                     } else {
-                        Toast.makeText(getApplicationContext(),"Invalid", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"Null user", Toast.LENGTH_LONG).show();
+                    }
+                    }else{
+
+                            Toast.makeText(getApplicationContext(),"U: "+loginText,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),"P: "+passwordText,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Connection error " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
-        }else{
+
+        /*
+        else{
 
             ParseUser.logInInBackground(loginText, passwordText, new LogInCallback() {
                 @Override
                 public void done(ParseUser user, ParseException e) {
+                    if(e==null){
                     if (user != null && user.get("userType").equals("hospital")) {
                         Toast.makeText(getApplicationContext(), "Welcome," + user.get("name"), Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(getApplicationContext(), HospitalMapsActivity.class);
@@ -99,20 +117,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnKeyListen
                         startActivity(intent);
                     } else {
                         Toast.makeText(getApplicationContext(), "Invalid Username/Password/UserType", Toast.LENGTH_LONG).show();
+                    }}
+                    else{
+                      Toast.makeText(getApplicationContext(),"Connection error "+e.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 }
             });
 
         }
-
+            */
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        ParseUser.getCurrentUser().logOut();
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
         notificationManager.cancel(0);
@@ -133,5 +152,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnKeyListen
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        ParseUser.getCurrentUser().logOut();
 
+        Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+        startActivity(intent);
+    }
 }

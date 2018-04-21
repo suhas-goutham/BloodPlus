@@ -65,7 +65,8 @@
         <activity
             android:name=".ProfileUserActivity"
             android:parentActivityName=".HospitalMapsActivity" />
-        <activity android:name=".DonorActivity"></activity>
+        <activity android:name=".DonorActivity" />
+        <activity android:name=".Authentication_page"></activity>
     </application>
 
 </manifest>

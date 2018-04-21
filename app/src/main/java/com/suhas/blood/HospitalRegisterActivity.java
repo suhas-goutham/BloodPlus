@@ -132,6 +132,8 @@ public class HospitalRegisterActivity extends AppCompatActivity implements View.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hospital_register);
 
+        ParseUser.getCurrentUser().logOut();
+
         nameH=(EditText) findViewById(R.id.nameHText);
         emailH=(EditText) findViewById(R.id.emailHText);
         passwordH=(EditText) findViewById(R.id.passwordHText1);
@@ -150,4 +152,11 @@ public class HospitalRegisterActivity extends AppCompatActivity implements View.
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent=new Intent(getApplicationContext(),RegisterActivity.class);
+        startActivity(intent);
+    }
 }

@@ -172,4 +172,12 @@ public class ProfileUserActivity extends AppCompatActivity {
         Log.i("Name",name);
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent=new Intent(getApplicationContext(),HospitalMapsActivity.class);
+        startActivity(intent);
+    }
 }

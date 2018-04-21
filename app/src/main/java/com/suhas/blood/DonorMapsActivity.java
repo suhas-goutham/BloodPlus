@@ -48,6 +48,14 @@ public class DonorMapsActivity extends FragmentActivity implements OnMapReadyCal
     private GoogleMap mMap;
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent=new Intent(getApplicationContext(),DonorActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donor_maps);
@@ -63,7 +71,8 @@ public class DonorMapsActivity extends FragmentActivity implements OnMapReadyCal
 
         if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
             if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,10000,10,locationListener);
+
             }
         }
     }
@@ -89,59 +98,63 @@ public class DonorMapsActivity extends FragmentActivity implements OnMapReadyCal
             public void onLocationChanged(Location location) {
                 Log.i("Location", location.toString());
                 LatLng user=new LatLng(location.getLatitude(),location.getLongitude());
-                mMap.clear();
-                mMap.addMarker(new MarkerOptions().position(user).title("You are here").snippet(ParseUser.getCurrentUser().getUsername()));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user,10));
 
-                final ParseGeoPoint geoPoint=new ParseGeoPoint(location.getLatitude(),location.getLongitude());
+                if(ParseUser.getCurrentUser()!=null) {
+                    mMap.clear();
+                    mMap.addMarker(new MarkerOptions().position(user).title("You are here").snippet(ParseUser.getCurrentUser().getUsername()));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user, 10));
 
-                ParseUser.getCurrentUser().put("location",geoPoint);
+                    final ParseGeoPoint geoPoint = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
 
-                ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if(e==null){
+                    ParseUser.getCurrentUser().put("location", geoPoint);
 
-                            Log.i("User location","Saved successfully");
-                        }else{
-                            Log.i("User location","Failed");
-                        }
-                    }
-                });
+                    ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
 
-                ParseQuery<ParseUser> query=ParseUser.getQuery();
-                query.whereNear("location",geoPoint);
-
-                query.findInBackground(new FindCallback<ParseUser>() {
-                    @Override
-                    public void done(List<ParseUser> objects, ParseException e) {
-                        if(e==null){
-                            if(objects.size()>0){
-
-                                for(ParseUser ob:objects){
-
-                                    if(ob.get("userType").equals("hospital")){
-
-                                        Double dist=geoPoint.distanceInKilometersTo((ParseGeoPoint) ob.getParseGeoPoint("location"));
-
-                                        Double distance=(double) Math.round(dist*10)/10;
-
-                                        Log.i("Distance"+ob.get("name").toString(),distance.toString());
-
-                                        LatLng user = new LatLng(ob.getParseGeoPoint("location").getLatitude(),ob.getParseGeoPoint("location").getLongitude());
-
-                                        mMap.addMarker(new MarkerOptions().position(user).title(ob.get("name").toString()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).snippet(ob.getUsername()));
-                                    }
-                                }
-
-                            }else{
-                                Toast.makeText(getApplicationContext(),"No nearby hospitals",Toast.LENGTH_SHORT).show();
+                                Log.i("User location", "Saved successfully");
+                            } else {
+                                Log.i("User location", "Failed");
                             }
-                        }else{
-                            Log.i("ShowUsers","Fail");
                         }
-                    }
-                });
+                    });
+
+                    ParseQuery<ParseUser> query = ParseUser.getQuery();
+                    query.whereNear("location", geoPoint);
+
+                    query.findInBackground(new FindCallback<ParseUser>() {
+                        @Override
+                        public void done(List<ParseUser> objects, ParseException e) {
+                            if (e == null) {
+                                if (objects.size() > 0) {
+
+                                    for (ParseUser ob : objects) {
+
+                                        if (ob.get("userType").equals("hospital")) {
+
+                                            Double dist = geoPoint.distanceInKilometersTo((ParseGeoPoint) ob.getParseGeoPoint("location"));
+
+                                            Double distance = (double) Math.round(dist * 10) / 10;
+
+                                            Log.i("Distance" + ob.get("name").toString(), distance.toString());
+
+                                            LatLng user = new LatLng(ob.getParseGeoPoint("location").getLatitude(), ob.getParseGeoPoint("location").getLongitude());
+
+                                            mMap.addMarker(new MarkerOptions().position(user).title(ob.get("name").toString()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).snippet(ob.getUsername()));
+                                        }
+                                    }
+
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "No nearby hospitals", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Log.i("ShowUsers", "Fail");
+                            }
+                        }
+                    });
+
+                }
             }
 
             @Override
@@ -162,7 +175,7 @@ public class DonorMapsActivity extends FragmentActivity implements OnMapReadyCal
 
         if (Build.VERSION.SDK_INT < 23) {
 
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,10000,10,locationListener);
 
         } else {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -171,7 +184,7 @@ public class DonorMapsActivity extends FragmentActivity implements OnMapReadyCal
 
             } else {
 
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10, locationListener);
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
                 LatLng lastKnown = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
@@ -241,12 +254,6 @@ public class DonorMapsActivity extends FragmentActivity implements OnMapReadyCal
                 if(!marker.getSnippet().equals(ParseUser.getCurrentUser().getUsername())) {
 
 
-                    /*
-                    Intent intent = new Intent(getApplicationContext(), ProfileUserActivity.class);
-                    intent.putExtra("userId", marker.getSnippet());
-                    startActivity(intent);
-                    */
-
                     AlertDialog.Builder builder = new AlertDialog.Builder(DonorMapsActivity.this,R.style.Theme_AppCompat_Dialog);
 
                     builder.setMessage("Do you wish to donate your blood to "+marker.getTitle()+" hospital?")
@@ -269,8 +276,6 @@ public class DonorMapsActivity extends FragmentActivity implements OnMapReadyCal
                                         objects.get(0).put("requestStatus",true);
                                         objects.get(0).put("hospitalName",marker.getTitle());
                                         objects.get(0).put("hospitalGeoPoint",parseGeoPoint);
-                                        objects.get(0).put("date",c.getTime());
-                                        objects.get(0).put("finishedDonation",true);
 
                                         objects.get(0).saveInBackground();
 
@@ -280,8 +285,7 @@ public class DonorMapsActivity extends FragmentActivity implements OnMapReadyCal
 
                             LatLng latLng=marker.getPosition();
 
-                            Intent donorIntent = new Intent(android.content.Intent.ACTION_VIEW,
-                                    Uri.parse("http://maps.google.com/maps?daddr=" + latLng.latitude+ "," + latLng.longitude));
+                            Intent donorIntent = new Intent(getApplicationContext(),Authentication_page.class);
 
                             startActivity(donorIntent);
 
@@ -293,9 +297,7 @@ public class DonorMapsActivity extends FragmentActivity implements OnMapReadyCal
                         }
                     }).show();
 
-                    //AlertDialog dialog = builder.create();
 
-                    //dialog.show();
 
                     Log.i("Click","GreenMap");
 
@@ -304,6 +306,8 @@ public class DonorMapsActivity extends FragmentActivity implements OnMapReadyCal
                 }
             }
         });
+
+
 
     }
 }

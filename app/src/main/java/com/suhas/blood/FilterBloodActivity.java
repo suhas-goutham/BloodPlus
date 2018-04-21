@@ -74,7 +74,13 @@ public class FilterBloodActivity extends AppCompatActivity {
         c7=(CheckBox) findViewById(R.id.checkBoxABp);
         c8=(CheckBox) findViewById(R.id.checkBoxABn);
 
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
 
+        Intent intent=new Intent(getApplicationContext(),HospitalMapsActivity.class);
+        startActivity(intent);
     }
 }
