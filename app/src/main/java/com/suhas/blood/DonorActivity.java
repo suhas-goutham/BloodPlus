@@ -3,6 +3,7 @@ package com.suhas.blood;
 import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -10,10 +11,12 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
@@ -41,61 +44,83 @@ public class DonorActivity extends AppCompatActivity {
     LocationManager locationManager;
     LocationListener locationListener;
     LatLng user;
-    TextView name1,age1,gender1,blood1,contact1,previous1,hospital1,date1;
-    String names="",ages="",genders="",bloods="",contacts="",previouss="",hospitals="",dates="";
+    TextView name1, age1, gender1, blood1, contact1, previous1, hospital1, date1;
+    String names = "", ages = "", genders = "", bloods = "", contacts = "", previouss = "", hospitals = "", dates = "";
 
-    public void goToDonate(View view){
+    public void goToDonate(View view) {
 
-        timer.cancel();
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            timer.cancel();
 
-        ParseQuery<ParseObject> query=new ParseQuery<ParseObject>("Request");
-        query.whereEqualTo("username",ParseUser.getCurrentUser().getUsername());
+            ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Request");
+            query.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
 
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-                if(e==null){
-                    if(objects.get(0).get("requestStatus").equals(false)){
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> objects, ParseException e) {
+                    if (e == null) {
+                        if (objects.get(0).get("requestStatus").equals(false)) {
 
-                        Intent intent=new Intent(getApplicationContext(),DonorMapsActivity.class);
-                        startActivity(intent);
+                            Intent intent = new Intent(getApplicationContext(), DonorMapsActivity.class);
+                            startActivity(intent);
 
-                    }else{
-                        Toast.makeText(getApplicationContext(),"Cannot donate now,please wait for a few days",Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Cannot donate now,please wait for a few days", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
-            }
-        });
+            });
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(DonorActivity.this, R.style.Theme_AppCompat_Dialog);
+
+            builder.setMessage("Do you wish to turn on your location?")
+                    .setTitle("Enable location").
+                    setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                            Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(myIntent);
+                        }
+                    }).
+                    setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Toast.makeText(getApplicationContext(), "Loacation is off", Toast.LENGTH_SHORT).show();
+                        }
+                    }).show();
+        }
 
 
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             }
         }
     }
 
-    Timer timer=new Timer();
+    Timer timer = new Timer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donor);
 
-        name1=(TextView) findViewById(R.id.name1);
-        age1=(TextView) findViewById(R.id.age1);
-        gender1=(TextView) findViewById(R.id.gender1);
-        blood1=(TextView) findViewById(R.id.blood1);
-        contact1=(TextView) findViewById(R.id.contact1);
-        previous1=(TextView) findViewById(R.id.previous1);
-        hospital1=(TextView) findViewById(R.id.hospital1);
-        date1=(TextView) findViewById(R.id.date1);
+        name1 = (TextView) findViewById(R.id.name1);
+        age1 = (TextView) findViewById(R.id.age1);
+        gender1 = (TextView) findViewById(R.id.gender1);
+        blood1 = (TextView) findViewById(R.id.blood1);
+        contact1 = (TextView) findViewById(R.id.contact1);
+        previous1 = (TextView) findViewById(R.id.previous1);
+        hospital1 = (TextView) findViewById(R.id.hospital1);
+        date1 = (TextView) findViewById(R.id.date1);
+
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         /*
         if(getIntent().getStringExtra("activity")!=null && getIntent().getStringExtra("activity").equals("authentication")){
@@ -119,58 +144,7 @@ public class DonorActivity extends AppCompatActivity {
         }
         */
 
-        if(ParseUser.getCurrentUser()!=null) {
-
-            final ParseQuery<ParseObject> query = ParseQuery.getQuery("Request");
-            query.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
-
-            final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
-
-
-            timer.scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-                    Log.i("Count", "1");
-                    query.findInBackground(new FindCallback<ParseObject>() {
-                        @Override
-                        public void done(List<ParseObject> objects, ParseException e) {
-
-                            if (e == null) {
-                                if (objects.size() > 0) {
-                                    for (ParseObject ob : objects) {
-                                        if (ParseUser.getCurrentUser() != null) {
-                                            if (ob.get("requestStatus").equals(true) && ob.get("username").equals(ParseUser.getCurrentUser().getUsername()) && ob.get("finishedDonation").equals(false)) {
-
-                                                Intent donorIntent = new Intent(getApplicationContext(), Authentication_page.class);
-
-                                                donorIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                                                final PendingIntent donorPendingIntent =
-                                                        PendingIntent.getActivity(getApplicationContext(), 0, donorIntent, 0);
-
-                                                NotificationCompat.Builder mBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(getApplicationContext()).
-                                                        setSmallIcon(R.drawable.blood_image).
-                                                        setContentTitle("Request for blood").
-                                                        setContentText("Do you accept to donate your blood to " + objects.get(0).get("hospitalName") + " hospital?").
-                                                        setContentIntent(donorPendingIntent).
-                                                        setAutoCancel(true);
-
-                                                timer.cancel();
-                                                notificationManager.notify(0, mBuilder.build());
-
-                                            }
-
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
-
-
-                }
-            }, 1000, 10000);
-
+        if (ParseUser.getCurrentUser() != null) {
 
             ParseQuery<ParseUser> query1 = ParseUser.getQuery();
             query1.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
@@ -232,81 +206,174 @@ public class DonorActivity extends AppCompatActivity {
 
         }
 
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new LocationListener() {
+
+        final ParseQuery<ParseObject> query = ParseQuery.getQuery("Request");
+        query.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
+
+        final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+
+
+        timer.scheduleAtFixedRate(new TimerTask() {
             @Override
-            public void onLocationChanged(Location location) {
-                Log.i("Location", location.toString());
-                user=new LatLng(location.getLatitude(),location.getLongitude());
-
-                ParseGeoPoint geoPoint=new ParseGeoPoint(location.getLatitude(),location.getLongitude());
-
-                if(ParseUser.getCurrentUser()!=null) {
-                    ParseUser.getCurrentUser().put("location", geoPoint);
-
-                    ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-
-                                Log.i("User location", "successfully");
-                            } else {
-                                Log.i("User location", "Failed");
-                            }
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-
-        if (Build.VERSION.SDK_INT < 23) {
-
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
-
-        } else {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-
-            } else {
-
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-                user = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
-
-                ParseGeoPoint geoPoint=new ParseGeoPoint(lastKnownLocation.getLatitude(),lastKnownLocation.getLongitude());
-
-                ParseUser.getCurrentUser().put("location",geoPoint);
-
-                ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+            public void run() {
+                Log.i("Count", "1");
+                query.findInBackground(new FindCallback<ParseObject>() {
                     @Override
-                    public void done(ParseException e) {
-                        if(e==null){
+                    public void done(List<ParseObject> objects, ParseException e) {
 
-                            Log.i("User location","Saved successfully");
-                        }else{
-                            Log.i("User location","Failed");
+                        if (e == null) {
+                            if (objects.size() > 0) {
+                                for (ParseObject ob : objects) {
+                                    if (ParseUser.getCurrentUser() != null) {
+                                        if (ob.get("requestStatus").equals(true) && ob.get("username").equals(ParseUser.getCurrentUser().getUsername()) && ob.get("finishedDonation").equals(false)) {
+
+                                            Intent donorIntent = new Intent(getApplicationContext(), Authentication_page.class);
+
+                                            donorIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                                            final PendingIntent donorPendingIntent =
+                                                    PendingIntent.getActivity(getApplicationContext(), 0, donorIntent, 0);
+
+                                            NotificationCompat.Builder mBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(getApplicationContext()).
+                                                    setSmallIcon(R.drawable.blood_image).
+                                                    setContentTitle("Request for blood").
+                                                    setContentText("Do you accept to donate your blood to " + objects.get(0).get("hospitalName") + " hospital?").
+                                                    setContentIntent(donorPendingIntent).
+                                                    setAutoCancel(true);
+
+                                            timer.cancel();
+                                            notificationManager.notify(0, mBuilder.build());
+
+                                        }
+
+                                    }
+                                }
+                            }
                         }
                     }
                 });
-            }
 
+
+            }
+        }, 1000, 10000);
+
+
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(DonorActivity.this, R.style.Theme_AppCompat_Dialog);
+
+            builder.setMessage("Do you wish to turn on your location?")
+                    .setTitle("Enable location").
+                    setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                            Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(myIntent);
+                        }
+                    }).
+                    setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Toast.makeText(getApplicationContext(), "Loaction is off", Toast.LENGTH_SHORT).show();
+                        }
+                    }).show();
+
+
+        } else {
+
+            locationListener = new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    Log.i("Location", location.toString());
+                    user = new LatLng(location.getLatitude(), location.getLongitude());
+
+                    ParseGeoPoint geoPoint = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
+
+                    if (ParseUser.getCurrentUser() != null) {
+                        ParseUser.getCurrentUser().put("location", geoPoint);
+
+                        ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+
+                                    Log.i("User location", "successfully");
+                                } else {
+                                    Log.i("User location", "Failed");
+                                }
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                    if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10, locationListener);
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            };
+
+            if (Build.VERSION.SDK_INT < 23) {
+
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
+            } else {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+                } else {
+
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
+                    Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+                    if(lastKnownLocation!=null) {
+                        user = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+
+                        ParseGeoPoint geoPoint = new ParseGeoPoint(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+
+                        ParseUser.getCurrentUser().put("location", geoPoint);
+
+                        ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+
+                                    Log.i("User location", "Saved successfully");
+                                } else {
+                                    Log.i("User location", "Failed");
+                                }
+                            }
+                        });
+                    }else{
+                        Toast.makeText(getApplicationContext(),"LastKnown is null",Toast.LENGTH_SHORT).show();
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
+                    }
+                }
+
+            }
         }
 
 
