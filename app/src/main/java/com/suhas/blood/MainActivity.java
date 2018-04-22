@@ -51,7 +51,8 @@ import com.parse.SaveCallback;
      public void onBackPressed() {
          super.onBackPressed();
 
-         Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+         Intent intent = new Intent(Intent.ACTION_MAIN);
+         intent.addCategory(Intent.CATEGORY_HOME);
          startActivity(intent);
      }
  }

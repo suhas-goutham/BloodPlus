@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,14 +26,16 @@ import com.parse.SignUpCallback;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class DonorRegisterActivity extends AppCompatActivity implements View.OnKeyListener,View.OnClickListener {
+public class DonorRegisterActivity extends AppCompatActivity /*implements View.OnKeyListener,View.OnClickListener*/ {
 
-    EditText name,email,password,mobile,age;
-    String name_s,email_s,password_s,mobile_s,blood_s,age_s,gender_s;
+    EditText name,email,password1,password2,mobile,age;
+    TextView signUp;
+    String name_s,email_s,password_s1,password_s2,mobile_s,blood_s,age_s,gender_s;
     ConstraintLayout background;
     TextView donorHeading;
     Spinner blood,gender;
 
+    /*
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
 
@@ -55,11 +58,13 @@ public class DonorRegisterActivity extends AppCompatActivity implements View.OnK
 
     }
 
+    */
     public void registerDonor(View view){
 
         name_s=name.getText().toString();
         email_s=email.getText().toString();
-        password_s=password.getText().toString();
+        password_s1=password1.getText().toString();
+        password_s2=password2.getText().toString();
         mobile_s=mobile.getText().toString();
         blood_s=blood.getSelectedItem().toString();
         age_s=age.getText().toString();
@@ -77,8 +82,13 @@ public class DonorRegisterActivity extends AppCompatActivity implements View.OnK
             status=0;
         }
 
-        if(!(password_s.length()>=6)){
+        if(!(password_s1.length()>=6)){
             Toast.makeText(getApplicationContext(),"Enter password of atleast 6 characters",Toast.LENGTH_SHORT).show();
+            status=0;
+        }
+
+        if(!(password_s2.equals(password_s1))){
+            Toast.makeText(getApplicationContext(),"Enter same password",Toast.LENGTH_SHORT).show();
             status=0;
         }
 
@@ -96,7 +106,7 @@ public class DonorRegisterActivity extends AppCompatActivity implements View.OnK
             final ParseUser user = new ParseUser();
 
             user.setUsername(email_s);
-            user.setPassword(password_s);
+            user.setPassword(password_s1);
             user.setEmail(email_s);
 
             user.signUpInBackground(new SignUpCallback() {
@@ -161,20 +171,33 @@ public class DonorRegisterActivity extends AppCompatActivity implements View.OnK
 
         name=(EditText) findViewById(R.id.nameText);
         email=(EditText) findViewById(R.id.emailText);
-        password=(EditText) findViewById(R.id.passwordText1);
+        password1=(EditText) findViewById(R.id.passwordText1);
+        password2=(EditText) findViewById(R.id.passwordText2);
         mobile=(EditText) findViewById(R.id.mobileText);
         blood=(Spinner) findViewById(R.id.bloodSpinner);
         gender=(Spinner) findViewById(R.id.genderSpinner);
         age=(EditText) findViewById(R.id.ageText);
+        signUp=(TextView) findViewById(R.id.textViewSignin);
 
-        background=(ConstraintLayout) findViewById(R.id.donorConstraint);
+        signUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+        /*
+        background=(RelativeLayout) findViewById(R.id.rel)
+                //(ConstraintLayout) findViewById(R.id.donorConstraint);
         donorHeading=(TextView) findViewById(R.id.textViewHospital);
-
+        */
+        /*
         background.setOnClickListener(this);
         donorHeading.setOnClickListener(this);
-
+        */
+        /*
         age.setOnKeyListener(this);
-
+        */
     }
 
     @Override

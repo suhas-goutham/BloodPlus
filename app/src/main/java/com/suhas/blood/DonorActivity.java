@@ -1,6 +1,7 @@
 package com.suhas.blood;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -274,7 +275,7 @@ public class DonorActivity extends AppCompatActivity {
                     }).
                     setNegativeButton("No", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            Toast.makeText(getApplicationContext(), "Loaction is off", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Location is off", Toast.LENGTH_SHORT).show();
                         }
                     }).show();
 
@@ -316,6 +317,7 @@ public class DonorActivity extends AppCompatActivity {
 
                     if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         // TODO: Consider calling
+                        ActivityCompat.requestPermissions((Activity) getApplicationContext(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                         //    ActivityCompat#requestPermissions
                         // here to request the missing permissions, and then overriding
                         //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -382,7 +384,6 @@ public class DonorActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         timer.cancel();
 
     }
@@ -391,6 +392,8 @@ public class DonorActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         ParseUser.getCurrentUser().logOut();
+
+        timer.cancel();
 
         Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
         startActivity(intent);

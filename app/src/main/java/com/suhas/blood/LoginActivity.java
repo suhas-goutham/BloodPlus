@@ -22,19 +22,21 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
-public class LoginActivity extends AppCompatActivity implements View.OnKeyListener, View.OnClickListener {
+public class LoginActivity extends AppCompatActivity/* implements View.OnKeyListener, View.OnClickListener*/ {
 
     EditText loginId;
     EditText password;
     String loginText;
     String passwordText;
     String userType="donor";
-
+    TextView textViewSignUp;
+    String textSignUp;
 
     ConstraintLayout constraintLayout;
     ImageView imageView;
     Switch userTypeSwitch;
 
+    /*
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
 
@@ -56,6 +58,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnKeyListen
         }
 
     }
+
+    */
 
     public void login2(View view){
 
@@ -139,7 +143,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnKeyListen
         loginId=(EditText) findViewById(R.id.loginText);
         password=(EditText) findViewById(R.id.passwordText);
         userTypeSwitch=(Switch) findViewById(R.id.switch1);
+        textViewSignUp=(TextView) findViewById(R.id.textViewSignup);
 
+        /*
         constraintLayout=(ConstraintLayout) findViewById(R.id.backgroundConstraint);
         imageView=(ImageView) findViewById(R.id.bloodImage);
 
@@ -148,6 +154,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnKeyListen
         userTypeSwitch.setOnClickListener(this);
 
         password.setOnKeyListener(this);
+        */
+
+        textViewSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(userTypeSwitch.isChecked()) {
+                    Intent intent = new Intent(getApplicationContext(),HospitalRegisterActivity.class);
+                    startActivity(intent);
+                }else{
+                    Intent intent = new Intent(getApplicationContext(),DonorRegisterActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
 
 
     }

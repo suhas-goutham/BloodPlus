@@ -19,14 +19,15 @@ import com.parse.SignUpCallback;
 
 import java.util.regex.Pattern;
 
-public class HospitalRegisterActivity extends AppCompatActivity implements View.OnKeyListener, View.OnClickListener {
+public class HospitalRegisterActivity extends AppCompatActivity/* implements View.OnKeyListener, View.OnClickListener */{
 
-    EditText nameH,emailH,passwordH,mobileH,cityH;
-    String name_s,email_s,password_s,mobile_s,city_s;
+    EditText nameH,emailH,passwordH1,passwordH2,mobileH,cityH;
+    String name_s,email_s,password_s1,password_s2,mobile_s,city_s;
     ConstraintLayout hospitalConstraint;
     TextView hospitalTextView;
+    TextView signIn;
 
-
+    /*
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
 
@@ -49,11 +50,13 @@ public class HospitalRegisterActivity extends AppCompatActivity implements View.
 
     }
 
+    */
     public void registerHospital(View view){
 
         name_s=nameH.getText().toString();
         email_s=emailH.getText().toString();
-        password_s=passwordH.getText().toString();
+        password_s1=passwordH1.getText().toString();
+        password_s2=passwordH2.getText().toString();
         mobile_s=mobileH.getText().toString();
         city_s=cityH.getText().toString();
 
@@ -69,8 +72,13 @@ public class HospitalRegisterActivity extends AppCompatActivity implements View.
             status=0;
         }
 
-        if(!(password_s.length()>6)){
+        if(!(password_s1.length()>6)){
             Toast.makeText(getApplicationContext(),"Enter password of atleast 6 characters",Toast.LENGTH_SHORT).show();
+            status=0;
+        }
+
+        if(!(password_s2.equals(password_s1))){
+            Toast.makeText(getApplicationContext(),"Enter same password",Toast.LENGTH_SHORT).show();
             status=0;
         }
 
@@ -87,7 +95,7 @@ public class HospitalRegisterActivity extends AppCompatActivity implements View.
             final ParseUser user = new ParseUser();
 
             user.setUsername(email_s);
-            user.setPassword(password_s);
+            user.setPassword(password_s1);
             user.setEmail(email_s);
 
             user.signUpInBackground(new SignUpCallback() {
@@ -136,10 +144,21 @@ public class HospitalRegisterActivity extends AppCompatActivity implements View.
 
         nameH=(EditText) findViewById(R.id.nameHText);
         emailH=(EditText) findViewById(R.id.emailHText);
-        passwordH=(EditText) findViewById(R.id.passwordHText1);
+        passwordH1=(EditText) findViewById(R.id.passwordHText1);
+        passwordH2=(EditText) findViewById(R.id.passwordHText2);
         mobileH=(EditText) findViewById(R.id.mobileHText);
         cityH=(EditText) findViewById(R.id.cityHText);
+        signIn=(TextView) findViewById(R.id.textViewSignin1);
 
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        /*
 
         hospitalConstraint=(ConstraintLayout) findViewById(R.id.registerConstraint);
         hospitalTextView=(TextView) findViewById(R.id.textViewHospital);
@@ -149,7 +168,7 @@ public class HospitalRegisterActivity extends AppCompatActivity implements View.
         hospitalConstraint.setOnClickListener(this);
         hospitalTextView.setOnClickListener(this);
 
-
+        */
     }
 
     @Override
