@@ -8,12 +8,14 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +24,7 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
-public class LoginActivity extends AppCompatActivity/* implements View.OnKeyListener, View.OnClickListener*/ {
+public class LoginActivity extends AppCompatActivity implements /*View.OnKeyListener,*/ View.OnClickListener {
 
     EditText loginId;
     EditText password;
@@ -46,12 +48,14 @@ public class LoginActivity extends AppCompatActivity/* implements View.OnKeyList
 
         return false;
     }
+    */
+
 
 
     @Override
     public void onClick(View v) {
 
-        if(v.getId()==R.id.backgroundConstraint || v.getId()==R.id.bloodImage || v.getId()==R.id.donorText || v.getId()==R.id.hospitalText){
+        if(v.getId()== R.id.cardView1 || v.getId()==R.id.relativeLayout1 ){
 
             InputMethodManager inputMethodManager=(InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
@@ -59,7 +63,7 @@ public class LoginActivity extends AppCompatActivity/* implements View.OnKeyList
 
     }
 
-    */
+
 
     public void login2(View view){
 
@@ -100,9 +104,9 @@ public class LoginActivity extends AppCompatActivity/* implements View.OnKeyList
                     }
                     }else{
 
-                            Toast.makeText(getApplicationContext(),"U: "+loginText,Toast.LENGTH_SHORT).show();
-                            Toast.makeText(getApplicationContext(),"P: "+passwordText,Toast.LENGTH_SHORT).show();
-                            Toast.makeText(getApplicationContext(), "Connection error " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        //    Toast.makeText(getApplicationContext(),"U: "+loginText,Toast.LENGTH_SHORT).show();
+                        //    Toast.makeText(getApplicationContext(),"P: "+passwordText,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),  e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -145,6 +149,12 @@ public class LoginActivity extends AppCompatActivity/* implements View.OnKeyList
         userTypeSwitch=(Switch) findViewById(R.id.switch1);
         textViewSignUp=(TextView) findViewById(R.id.textViewSignup);
 
+        CardView cardView=(CardView) findViewById(R.id.cardView1);
+        RelativeLayout relativeLayout=(RelativeLayout) findViewById(R.id.relativeLayout1);
+
+        cardView.setOnClickListener((View.OnClickListener) this);
+        relativeLayout.setOnClickListener((View.OnClickListener) this);
+
         /*
         constraintLayout=(ConstraintLayout) findViewById(R.id.backgroundConstraint);
         imageView=(ImageView) findViewById(R.id.bloodImage);
@@ -177,7 +187,8 @@ public class LoginActivity extends AppCompatActivity/* implements View.OnKeyList
         super.onBackPressed();
         ParseUser.getCurrentUser().logOut();
 
-        Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
         startActivity(intent);
     }
 }

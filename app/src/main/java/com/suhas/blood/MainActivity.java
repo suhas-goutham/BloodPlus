@@ -1,6 +1,8 @@
  package com.suhas.blood;
 
+import android.app.ActionBar;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,18 +26,27 @@ import com.parse.SaveCallback;
 
     }
 
-    public void register(View view){
-
-        Toast.makeText(this,"Register",Toast.LENGTH_SHORT).show();
-        Intent intent=new Intent(getApplicationContext(),RegisterActivity.class);
-        startActivity(intent);
-
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        View decorView = getWindow().getDecorView();
+// Hide the status bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+
+        getSupportActionBar().hide();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
+                startActivity(intent);
+            }
+        },3000);
+// Remember that you should never show the action bar if the
+// status bar is hidden, so hide that too if necessary.
 
         try{
             ParseUser.getCurrentUser().logOut();
@@ -46,6 +57,30 @@ import com.parse.SaveCallback;
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
         
     }
+
+     @Override
+     protected void onResume() {
+         super.onResume();
+
+         View decorView = getWindow().getDecorView();
+// Hide the status bar.
+         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+         decorView.setSystemUiVisibility(uiOptions);
+
+         getSupportActionBar().hide();
+
+         new Handler().postDelayed(new Runnable() {
+             @Override
+             public void run() {
+                 Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
+                 startActivity(intent);
+             }
+         },3000);
+// Remember that you should never show the action bar if the
+// status bar is hidden, so hide that too if necessary.
+
+
+     }
 
      @Override
      public void onBackPressed() {

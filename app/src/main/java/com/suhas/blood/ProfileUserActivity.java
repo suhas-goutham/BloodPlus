@@ -91,7 +91,7 @@ public class ProfileUserActivity extends AppCompatActivity {
                             @Override
                             public void done(ParseException e) {
                                 if(e==null){
-                                    Toast.makeText(getApplicationContext(),"Done",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(),"Request sent to donor",Toast.LENGTH_SHORT).show();
                                 }else{
                                     Log.i("Error","Save error ");
 

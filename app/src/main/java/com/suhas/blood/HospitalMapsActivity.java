@@ -81,7 +81,11 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
 
         switch (item.getItemId()){
             case R.id.blood_request:
-                requestAllBlood();
+                if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    requestAllBlood();
+                }else{
+                    Toast.makeText(getApplicationContext(),"Location is off",Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.filter:
                 if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -103,50 +107,56 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
 
             mMap.clear();
             mMap.addMarker(new MarkerOptions().position(user).title(ParseUser.getCurrentUser().get("name").toString()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user, 10));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user, 18));
 
             final ArrayList list = getIntent().getStringArrayListExtra("bloodList");
 
-            Log.i("array", list.toString());
+            if (list.size() == 0) {
+                requestAllBlood();
+            } else {
 
-            ParseQuery<ParseUser> query = ParseUser.getQuery();
+                Log.i("array", list.toString());
 
-            query.whereNear("location", geoPoint);
+                ParseQuery<ParseUser> query = ParseUser.getQuery();
 
-            query.findInBackground(new FindCallback<ParseUser>() {
-                @Override
-                public void done(List<ParseUser> objects, ParseException e) {
-                    if (e == null) {
-                        if (objects.size() > 0) {
+                query.whereNear("location", geoPoint);
 
-                            for (ParseUser ob : objects) {
+                query.findInBackground(new FindCallback<ParseUser>() {
+                    @Override
+                    public void done(List<ParseUser> objects, ParseException e) {
+                        if (e == null) {
+                            if (objects.size() > 0) {
 
-                                if (ob.get("userType").equals("donor") && list.contains(ob.get("blood_grp").toString())) {
+                                for (ParseUser ob : objects) {
 
-                                    Double dist = geoPoint.distanceInKilometersTo((ParseGeoPoint) ob.getParseGeoPoint("location"));
+                                    if (ob.get("userType").equals("donor") && list.contains(ob.get("blood_grp").toString())) {
 
-                                    Double distance = (double) Math.round(dist * 10) / 10;
+                                        Double dist = geoPoint.distanceInKilometersTo((ParseGeoPoint) ob.getParseGeoPoint("location"));
 
-                                    LatLng user = new LatLng(ob.getParseGeoPoint("location").getLatitude(), ob.getParseGeoPoint("location").getLongitude());
+                                        Double distance = (double) Math.round(dist * 10) / 10;
 
-                                    mMap.addMarker(new MarkerOptions().position(user).title(ob.get("name").toString() + "(" + ob.get("blood_grp") + ")").snippet(ob.getUsername()));
+                                        if(distance<10) {
 
+                                            LatLng user = new LatLng(ob.getParseGeoPoint("location").getLatitude(), ob.getParseGeoPoint("location").getLongitude());
 
+                                            mMap.addMarker(new MarkerOptions().position(user).title(ob.get("name").toString() + "(" + ob.get("blood_grp") + ")").snippet(ob.getUsername()));
+                                        }
+
+                                    }
                                 }
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), "No nearby users", Toast.LENGTH_SHORT).show();
                             }
-
                         } else {
-                            Toast.makeText(getApplicationContext(), "No nearby users", Toast.LENGTH_SHORT).show();
+                            Log.i("ShowUsers", "Fail");
                         }
-                    } else {
-                        Log.i("ShowUsers", "Fail");
                     }
-                }
-            });
-        }else{
-            Toast.makeText(getApplicationContext(),"Location is off",Toast.LENGTH_SHORT).show();
-
-        }
+                });
+            }
+            }else{
+                Toast.makeText(getApplicationContext(), "Location is off", Toast.LENGTH_SHORT).show();
+            }
 
     }
 
@@ -155,7 +165,7 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
         if(user!=null) {
             mMap.clear();
             mMap.addMarker(new MarkerOptions().position(user).title(ParseUser.getCurrentUser().get("name").toString()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).snippet(ParseUser.getCurrentUser().getUsername()));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user, 10));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user, 18));
 
             ParseQuery<ParseUser> query = ParseUser.getQuery();
             query.whereNear("location", geoPoint);
@@ -174,12 +184,13 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
                                     Double dist = geoPoint.distanceInKilometersTo((ParseGeoPoint) ob.getParseGeoPoint("location"));
 
                                     Double distance = (double) Math.round(dist * 10) / 10;
-
                                     Log.i("Distance" + ob.get("name").toString(), distance.toString());
 
-                                    LatLng user = new LatLng(ob.getParseGeoPoint("location").getLatitude(), ob.getParseGeoPoint("location").getLongitude());
+                                    if(distance<10) {
+                                        LatLng user = new LatLng(ob.getParseGeoPoint("location").getLatitude(), ob.getParseGeoPoint("location").getLongitude());
 
-                                    mMap.addMarker(new MarkerOptions().position(user).title(ob.get("name").toString() + "(" + ob.get("blood_grp") + ")").snippet(ob.getUsername()));
+                                        mMap.addMarker(new MarkerOptions().position(user).title(ob.get("name").toString() + "(" + ob.get("blood_grp") + ")").snippet(ob.getUsername()));
+                                    }
                                 }
                             }
 
@@ -220,7 +231,7 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
 
                     Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-                    if(lastKnownLocation!=null) {
+                    if (lastKnownLocation != null) {
                         user = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
                         geoPoint = new ParseGeoPoint(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
 
@@ -245,9 +256,10 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
                             Log.i("Intent", "Login");
                             requestAllBlood();
                         }
-                    }else{
+                    } else {
 
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                        requestAllBlood();
 
                     }
 
@@ -285,7 +297,7 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
 
 
         }
-        
+
         if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
             locationListener = new LocationListener() {
                 @Override
@@ -334,6 +346,7 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
                         return;
                     }
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10, locationListener);
+                    requestAllBlood();
 
                 }
 
@@ -387,8 +400,9 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
                         });
 
                     }else{
-                        Toast.makeText(getApplicationContext(),"LastKnown is null",Toast.LENGTH_SHORT).show();
+                   //     Toast.makeText(getApplicationContext(),"LastKnown is null",Toast.LENGTH_SHORT).show();
                         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
+                        requestAllBlood();
                     }
                 }
 

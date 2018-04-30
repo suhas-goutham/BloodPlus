@@ -5,6 +5,7 @@ import android.media.MediaCodec;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -26,7 +27,7 @@ import com.parse.SignUpCallback;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class DonorRegisterActivity extends AppCompatActivity /*implements View.OnKeyListener,View.OnClickListener*/ {
+public class DonorRegisterActivity extends AppCompatActivity implements /*View.OnKeyListener*/View.OnClickListener {
 
     EditText name,email,password1,password2,mobile,age;
     TextView signUp;
@@ -46,11 +47,11 @@ public class DonorRegisterActivity extends AppCompatActivity /*implements View.O
 
         return false;
     }
-
+*/
     @Override
     public void onClick(View v) {
 
-        if(v.getId()==R.id.donorConstraint || v.getId()==R.id.textViewHospital){
+        if(v.getId()==R.id.relativeLayout2 || v.getId()==R.id.cardView2){
 
             InputMethodManager inputMethodManager=(InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
@@ -58,7 +59,7 @@ public class DonorRegisterActivity extends AppCompatActivity /*implements View.O
 
     }
 
-    */
+
     public void registerDonor(View view){
 
         name_s=name.getText().toString();
@@ -77,7 +78,7 @@ public class DonorRegisterActivity extends AppCompatActivity /*implements View.O
             status=0;
         }
 
-        if(!Pattern.matches("[a-zA-Z]{1,10}[@][a-zA-Z]{1,10}(.com|.org|.edu)",email_s)){
+        if(!Pattern.matches("[a-zA-Z0-9]{1,20}[@][a-zA-Z]{1,10}(.com|.org|.edu)",email_s)){
             Toast.makeText(getApplicationContext(),"Enter valid email ID",Toast.LENGTH_SHORT).show();
             status=0;
         }
@@ -97,10 +98,26 @@ public class DonorRegisterActivity extends AppCompatActivity /*implements View.O
             Toast.makeText(getApplicationContext(),"Enter valid mobile number",Toast.LENGTH_SHORT).show();
         }
 
-        if(age_s==null){
+        if(age_s==null || age_s==""){
             status=0;
             Toast.makeText(getApplicationContext(),"Enter correct age",Toast.LENGTH_SHORT).show();
+        }else {
+
+            try {
+                if (Integer.parseInt(age_s) < 18) {
+                    status = 0;
+                    Toast.makeText(getApplicationContext(), "You must be atleast 18 years of age to donate", Toast.LENGTH_SHORT).show();
+                }
+
+                if (Integer.parseInt(age_s) > 60) {
+                    status = 0;
+                    Toast.makeText(getApplicationContext(), "You must be less than 60 years of age to donate", Toast.LENGTH_SHORT).show();
+                }
+            }catch (NumberFormatException e){
+                
+            }
         }
+
 
         if(status==1) {
             final ParseUser user = new ParseUser();
@@ -179,6 +196,13 @@ public class DonorRegisterActivity extends AppCompatActivity /*implements View.O
         age=(EditText) findViewById(R.id.ageText);
         signUp=(TextView) findViewById(R.id.textViewSignin);
 
+        CardView cardView=(CardView) findViewById(R.id.cardView2);
+        RelativeLayout relativeLayout=(RelativeLayout) findViewById(R.id.relativeLayout2);
+
+        cardView.setOnClickListener((View.OnClickListener) this);
+        relativeLayout.setOnClickListener((View.OnClickListener) this);
+
+
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -204,7 +228,7 @@ public class DonorRegisterActivity extends AppCompatActivity /*implements View.O
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent=new Intent(getApplicationContext(),RegisterActivity.class);
+        Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
         startActivity(intent);
     }
 }

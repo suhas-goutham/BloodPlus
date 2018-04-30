@@ -85,7 +85,7 @@ public class DonorActivity extends AppCompatActivity {
                     }).
                     setNegativeButton("No", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            Toast.makeText(getApplicationContext(), "Loacation is off", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Location is off", Toast.LENGTH_SHORT).show();
                         }
                     }).show();
         }
@@ -192,6 +192,9 @@ public class DonorActivity extends AppCompatActivity {
                                 String date11 = dates.substring(4, 11);
                                 String date12 = dates.substring(30);
 
+                                previous1.setText("Previous donation details:");
+                                hospital1.setVisibility(View.VISIBLE);
+                                date1.setVisibility(View.VISIBLE);
                                 hospital1.setText("Hospital name: " + hospitals);
                                 date1.setText("Date: " + date11 + " " + date12);
 
@@ -209,55 +212,56 @@ public class DonorActivity extends AppCompatActivity {
 
 
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("Request");
-        query.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
+        if(ParseUser.getCurrentUser()!=null) {
+            query.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
 
-        final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+            final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
 
 
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Log.i("Count", "1");
-                query.findInBackground(new FindCallback<ParseObject>() {
-                    @Override
-                    public void done(List<ParseObject> objects, ParseException e) {
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    Log.i("Count", "1");
+                    query.findInBackground(new FindCallback<ParseObject>() {
+                        @Override
+                        public void done(List<ParseObject> objects, ParseException e) {
 
-                        if (e == null) {
-                            if (objects.size() > 0) {
-                                for (ParseObject ob : objects) {
-                                    if (ParseUser.getCurrentUser() != null) {
-                                        if (ob.get("requestStatus").equals(true) && ob.get("username").equals(ParseUser.getCurrentUser().getUsername()) && ob.get("finishedDonation").equals(false)) {
+                            if (e == null) {
+                                if (objects.size() > 0) {
+                                    for (ParseObject ob : objects) {
+                                        if (ParseUser.getCurrentUser() != null) {
+                                            if (ob.get("requestStatus").equals(true) && ob.get("username").equals(ParseUser.getCurrentUser().getUsername()) && ob.get("finishedDonation").equals(false)) {
 
-                                            Intent donorIntent = new Intent(getApplicationContext(), Authentication_page.class);
+                                                Intent donorIntent = new Intent(getApplicationContext(), Authentication_page.class);
 
-                                            donorIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                donorIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                                            final PendingIntent donorPendingIntent =
-                                                    PendingIntent.getActivity(getApplicationContext(), 0, donorIntent, 0);
+                                                final PendingIntent donorPendingIntent =
+                                                        PendingIntent.getActivity(getApplicationContext(), 0, donorIntent, 0);
 
-                                            NotificationCompat.Builder mBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(getApplicationContext()).
-                                                    setSmallIcon(R.drawable.blood_image).
-                                                    setContentTitle("Request for blood").
-                                                    setContentText("Do you accept to donate your blood to " + objects.get(0).get("hospitalName") + " hospital?").
-                                                    setContentIntent(donorPendingIntent).
-                                                    setAutoCancel(true);
+                                                NotificationCompat.Builder mBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(getApplicationContext()).
+                                                        setSmallIcon(R.drawable.blood_image).
+                                                        setContentTitle("Request for blood").
+                                                        setContentText("Do you accept to donate your blood to " + objects.get(0).get("hospitalName") + " hospital?").
+                                                        setContentIntent(donorPendingIntent).
+                                                        setAutoCancel(true);
 
-                                            timer.cancel();
-                                            notificationManager.notify(0, mBuilder.build());
+                                                timer.cancel();
+                                                notificationManager.notify(0, mBuilder.build());
+
+                                            }
 
                                         }
-
                                     }
                                 }
                             }
                         }
-                    }
-                });
+                    });
 
 
-            }
-        }, 1000, 10000);
-
+                }
+            }, 1000, 10000);
+        }
 
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 
@@ -370,7 +374,7 @@ public class DonorActivity extends AppCompatActivity {
                             }
                         });
                     }else{
-                        Toast.makeText(getApplicationContext(),"LastKnown is null",Toast.LENGTH_SHORT).show();
+                     //   Toast.makeText(getApplicationContext(),"LastKnown is null",Toast.LENGTH_SHORT).show();
                         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
                     }
                 }

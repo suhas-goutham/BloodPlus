@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +21,7 @@ import com.parse.SignUpCallback;
 
 import java.util.regex.Pattern;
 
-public class HospitalRegisterActivity extends AppCompatActivity/* implements View.OnKeyListener, View.OnClickListener */{
+public class HospitalRegisterActivity extends AppCompatActivity implements /*View.OnKeyListener,*/ View.OnClickListener {
 
     EditText nameH,emailH,passwordH1,passwordH2,mobileH,cityH;
     String name_s,email_s,password_s1,password_s2,mobile_s,city_s;
@@ -38,11 +40,11 @@ public class HospitalRegisterActivity extends AppCompatActivity/* implements Vie
 
         return false;
     }
-
+*/
     @Override
     public void onClick(View v) {
 
-        if(v.getId()==R.id.registerConstraint || v.getId()==R.id.textViewHospital){
+        if(v.getId()==R.id.cardView3 || v.getId()==R.id.relativeLayout3){
 
             InputMethodManager inputMethodManager=(InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
@@ -50,7 +52,7 @@ public class HospitalRegisterActivity extends AppCompatActivity/* implements Vie
 
     }
 
-    */
+
     public void registerHospital(View view){
 
         name_s=nameH.getText().toString();
@@ -67,7 +69,7 @@ public class HospitalRegisterActivity extends AppCompatActivity/* implements Vie
             status=0;
         }
 
-        if(!Pattern.matches("[a-zA-Z]{1,10}[@][a-zA-Z]{1,10}(.com|.org|.edu)",email_s)){
+        if(!Pattern.matches("[a-zA-Z0-9]{1,20}[@][a-zA-Z]{1,10}(.com|.org|.edu)",email_s)){
             Toast.makeText(getApplicationContext(),"Enter valid email ID",Toast.LENGTH_SHORT).show();
             status=0;
         }
@@ -150,6 +152,13 @@ public class HospitalRegisterActivity extends AppCompatActivity/* implements Vie
         cityH=(EditText) findViewById(R.id.cityHText);
         signIn=(TextView) findViewById(R.id.textViewSignin1);
 
+        CardView cardView=(CardView) findViewById(R.id.cardView3);
+        RelativeLayout relativeLayout=(RelativeLayout) findViewById(R.id.relativeLayout3);
+
+        cardView.setOnClickListener((View.OnClickListener) this);
+        relativeLayout.setOnClickListener((View.OnClickListener) this);
+
+
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,7 +184,7 @@ public class HospitalRegisterActivity extends AppCompatActivity/* implements Vie
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent=new Intent(getApplicationContext(),RegisterActivity.class);
+        Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
         startActivity(intent);
     }
 }

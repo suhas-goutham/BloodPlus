@@ -71,7 +71,7 @@ public class DonorMapsActivity extends FragmentActivity implements OnMapReadyCal
 
         if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
             if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,10000,10,locationListener);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,20,locationListener);
 
             }
         }
@@ -102,7 +102,7 @@ public class DonorMapsActivity extends FragmentActivity implements OnMapReadyCal
                 if(ParseUser.getCurrentUser()!=null) {
                     mMap.clear();
                     mMap.addMarker(new MarkerOptions().position(user).title("You are here").snippet(ParseUser.getCurrentUser().getUsername()));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user, 10));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user, 15));
 
                     final ParseGeoPoint geoPoint = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
 
@@ -175,7 +175,7 @@ public class DonorMapsActivity extends FragmentActivity implements OnMapReadyCal
 
         if (Build.VERSION.SDK_INT < 23) {
 
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,10000,10,locationListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,20,locationListener);
 
         } else {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -184,63 +184,69 @@ public class DonorMapsActivity extends FragmentActivity implements OnMapReadyCal
 
             } else {
 
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10, locationListener);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,20, locationListener);
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-                LatLng lastKnown = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
-                mMap.clear();
-                mMap.addMarker(new MarkerOptions().position(lastKnown).title("You are here").snippet(ParseUser.getCurrentUser().getUsername()));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastKnown,10));
+                if(lastKnownLocation!=null) {
+                    LatLng lastKnown = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+                    mMap.clear();
+                    mMap.addMarker(new MarkerOptions().position(lastKnown).title("You are here").snippet(ParseUser.getCurrentUser().getUsername()));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastKnown, 15));
 
-                final ParseGeoPoint geoPoint=new ParseGeoPoint(lastKnownLocation.getLatitude(),lastKnownLocation.getLongitude());
+                    final ParseGeoPoint geoPoint = new ParseGeoPoint(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
 
-                ParseUser.getCurrentUser().put("location",geoPoint);
+                    ParseUser.getCurrentUser().put("location", geoPoint);
 
-                ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                            if(e==null){
+                    ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
 
-                                Log.i("User location","Saved successfully");
-                            }else{
-                                Log.i("User location","Failed");
+                                Log.i("User location", "Saved successfully");
+                            } else {
+                                Log.i("User location", "Failed");
                             }
-                    }
-                });
-
-                ParseQuery<ParseUser> query=ParseUser.getQuery();
-                query.whereNear("location",geoPoint);
-
-                query.findInBackground(new FindCallback<ParseUser>() {
-                    @Override
-                    public void done(List<ParseUser> objects, ParseException e) {
-                        if(e==null){
-                            if(objects.size()>0){
-
-                                for(ParseUser ob:objects){
-
-                                    if(ob.get("userType").equals("hospital")){
-
-                                        Double dist=geoPoint.distanceInKilometersTo((ParseGeoPoint) ob.getParseGeoPoint("location"));
-
-                                        Double distance=(double) Math.round(dist*10)/10;
-
-                                        Log.i("Distance"+ob.get("name").toString(),distance.toString());
-
-                                        LatLng user = new LatLng(ob.getParseGeoPoint("location").getLatitude(),ob.getParseGeoPoint("location").getLongitude());
-
-                                        mMap.addMarker(new MarkerOptions().position(user).title(ob.get("name").toString()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).snippet(ob.getUsername()));
-                                    }
-                                }
-
-                            }else{
-                                Toast.makeText(getApplicationContext(),"No nearby hospitals",Toast.LENGTH_SHORT).show();
-                            }
-                        }else{
-                            Log.i("ShowUsers","Fail");
                         }
-                    }
-                });
+                    });
+
+                    ParseQuery<ParseUser> query = ParseUser.getQuery();
+                    query.whereNear("location", geoPoint);
+
+                    query.findInBackground(new FindCallback<ParseUser>() {
+                        @Override
+                        public void done(List<ParseUser> objects, ParseException e) {
+                            if (e == null) {
+                                if (objects.size() > 0) {
+
+                                    for (ParseUser ob : objects) {
+
+                                        if (ob.get("userType").equals("hospital")) {
+
+                                            Double dist = geoPoint.distanceInKilometersTo((ParseGeoPoint) ob.getParseGeoPoint("location"));
+
+                                            Double distance = (double) Math.round(dist * 10) / 10;
+
+                                            Log.i("Distance" + ob.get("name").toString(), distance.toString());
+
+                                            LatLng user = new LatLng(ob.getParseGeoPoint("location").getLatitude(), ob.getParseGeoPoint("location").getLongitude());
+
+                                            mMap.addMarker(new MarkerOptions().position(user).title(ob.get("name").toString()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).snippet(ob.getUsername()));
+                                        }
+                                    }
+
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "No nearby hospitals", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Log.i("ShowUsers", "Fail");
+                            }
+                        }
+                    });
+                }else{
+                       // Toast.makeText(getApplicationContext(),"LastKnown is null",Toast.LENGTH_SHORT).show();
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
+
+                }
             }
 
         }

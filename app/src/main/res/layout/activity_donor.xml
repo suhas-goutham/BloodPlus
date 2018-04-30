@@ -1,126 +1,307 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.suhas.blood.DonorActivity">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.suhas.blood.HospitalRegisterActivity">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="3dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="16dp"
-        android:text="Your Profile"
-        android:textColor="@color/common_google_signin_btn_text_dark_focused"
-        android:textSize="24sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/name1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="24dp"
-        android:text="Name"
-        android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            <LinearLayout
+                android:id="@+id/linearlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
-    <TextView
-        android:id="@+id/age1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="20dp"
-        android:text="Age"
-        android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name1" />
+                android:background="@color/redColor"
+                android:gravity="center"
+                android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/gender1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="20dp"
-        android:text="Gender"
-        android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/age1" />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_content_paste_black_24dp"
+                    android:tint="@android:color/black" />
 
-    <TextView
-        android:id="@+id/blood1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="20dp"
-        android:text="Blood Group"
-        android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gender1" />
+                <TextView
+                    android:id="@+id/textViewHospital"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="PROFILE"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
 
-    <TextView
-        android:id="@+id/contact1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="20dp"
-        android:text="Contact number "
-        android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/blood1" />
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/previous1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="20dp"
-        android:text="Previous Donation Details:"
-        android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contact1" />
+            <RelativeLayout
+                android:id="@+id/relativelayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linearlayout"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp">
 
-    <TextView
-        android:id="@+id/hospital1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="20dp"
-        android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/previous1" />
+                <ImageView
+                    android:id="@+id/image_user"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@color/redColor"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_person_pin_black_24dp" />
 
-    <TextView
-        android:id="@+id/date1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="20dp"
-        android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hospital1" />
+                <TextView
+                    android:id="@+id/name1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/image_user"
+                    android:layout_alignParentTop="true"
+                    android:textColor="@android:color/black"
+                    android:layout_toRightOf="@+id/image_user"
+                    android:background="@color/backgroundGreen"
+                    android:inputType="textPersonName"
+                    android:paddingLeft="20dp"
+                    android:textSize="15sp" />
+            </RelativeLayout>
 
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:onClick="goToDonate"
-        android:text="DONATE"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date1" />
+            <RelativeLayout
+                android:id="@+id/relativelayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relativelayout1"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp">
 
-</android.support.constraint.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/img_email"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@color/redColor"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_edit_black_24dp" />
+
+                <TextView
+                    android:id="@+id/age1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/img_email"
+                    android:layout_alignParentTop="true"
+                    android:textColor="@android:color/black"
+                    android:layout_toRightOf="@+id/img_email"
+                    android:background="@color/backgroundGreen"
+
+                    android:paddingLeft="20dp"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativelayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relativelayout2"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp">
+
+                <ImageView
+                    android:id="@+id/image_password"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@color/redColor"
+                    android:padding="8dp"
+                    android:rotation="180"
+                    android:src="@drawable/ic_place_black_24dp" />
+
+                <TextView
+                    android:id="@+id/blood1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/image_password"
+                    android:layout_alignParentTop="true"
+                    android:textColor="@android:color/black"
+                    android:layout_toRightOf="@+id/image_password"
+
+                    android:background="@color/backgroundGreen"
+                    android:paddingLeft="20dp"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativelayout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relativelayout3"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp">
+
+                <ImageView
+                    android:id="@+id/image_retypepassword"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@color/redColor"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_smartphone_black_24dp" />
+
+                <TextView
+                    android:id="@+id/contact1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/image_retypepassword"
+                    android:layout_alignParentTop="true"
+                    android:textColor="@android:color/black"
+
+                    android:layout_toRightOf="@+id/image_retypepassword"
+                    android:background="@color/backgroundGreen"
+                    android:paddingLeft="20dp"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativelayout5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relativelayout4"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp">
+
+                <ImageView
+                    android:id="@+id/image_gender"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@color/redColor"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_face_black_24dp" />
+
+                <TextView
+                    android:id="@+id/gender1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/image_gender"
+                    android:layout_alignParentTop="true"
+                    android:textColor="@android:color/black"
+
+                    android:layout_toRightOf="@+id/image_gender"
+                    android:background="@color/backgroundGreen"
+                    android:paddingLeft="20dp"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativelayout6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relativelayout5"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp">
+
+                <ImageView
+                    android:id="@+id/image_prev"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@color/redColor"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_settings_backup_restore_black_24dp" />
+
+                <TextView
+                    android:id="@+id/previous1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/image_prev"
+                    android:layout_alignParentTop="true"
+                    android:paddingTop="5dp"
+                    android:textColor="@android:color/black"
+                    android:layout_toRightOf="@+id/image_prev"
+                    android:background="@color/backgroundGreen"
+                    android:paddingLeft="20dp"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativelayout7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relativelayout6"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/hospital1"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+
+                    android:layout_alignParentTop="true"
+
+                    android:textColor="@android:color/black"
+                    android:background="@color/backgroundGreen"
+                    android:paddingLeft="20dp"
+                    android:textSize="15sp"
+                    android:visibility="invisible" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativelayout8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relativelayout7"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/date1"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+
+                    android:layout_alignParentTop="true"
+
+                    android:textColor="@android:color/black"
+                    android:background="@color/backgroundGreen"
+                    android:paddingLeft="20dp"
+                    android:textSize="15sp"
+                    android:visibility="invisible" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relativelayout8"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/redColor"
+                android:fontFamily="sans-serif-medium"
+                android:onClick="goToDonate"
+                android:text="Donate blood"
+                android:textColor="@android:color/black" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+</RelativeLayout>

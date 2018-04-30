@@ -1,93 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.suhas.blood.ProfileUserActivity">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.suhas.blood.HospitalRegisterActivity">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="60dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="3dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <LinearLayout
+                android:id="@+id/linearlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="16dp"
-        android:text="Donor Information"
-        android:textColor="@color/common_google_signin_btn_text_dark_focused"
-        android:textSize="24sp"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+                android:orientation="vertical"
+                android:background="@color/redColor"
+                android:gravity="center"
+                >
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_content_paste_black_24dp"
+                    android:tint="@android:color/black"
+                    android:padding="5dp"/>
+                <TextView
+                    android:id="@+id/textViewHospital"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
 
-    <TextView
-        android:id="@+id/nameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Name"
-        android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                    android:text="PROFILE"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="@android:color/black"
+                    android:fontFamily="sans-serif-medium"
+                    />
 
-    <TextView
-        android:id="@+id/ageTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Age"
-        android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/bloodTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Blood Group"
-        android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ageTextView" />
+            <RelativeLayout
+                android:id="@+id/relativelayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linearlayout"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
+                <ImageView
+                    android:id="@+id/image_user"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@color/redColor"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_person_pin_black_24dp"/>
+                <TextView
+                    android:id="@+id/nameTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/image_user"
+                    android:layout_alignParentTop="true"
+                    android:textColor="@android:color/black"
+                    android:paddingLeft="20dp"
+                    android:textSize="15sp"
+                    android:inputType="textPersonName"
+                    android:layout_alignBottom="@+id/image_user"
+                    android:background="@color/backgroundGreen"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/relativelayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relativelayout1"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
+                <ImageView
+                    android:id="@+id/img_email"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@color/redColor"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_edit_black_24dp"/>
+                <TextView
+                    android:id="@+id/ageTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/img_email"
+                    android:layout_alignParentTop="true"
+                    android:textColor="@android:color/black"
+                    android:paddingLeft="20dp"
+                    android:textSize="15sp"
 
-    <TextView
-        android:id="@+id/contactTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Contact"
-        android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bloodTextView" />
+                    android:layout_alignBottom="@+id/img_email"
+                    android:background="@color/backgroundGreen"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/relativelayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relativelayout2"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
+                <ImageView
+                    android:id="@+id/image_password"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@color/redColor"
+                    android:padding="8dp"
+                    android:rotation="180"
+                    android:src="@drawable/ic_place_black_24dp"/>
+                <TextView
+                    android:id="@+id/bloodTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/image_password"
+                    android:layout_alignParentTop="true"
+                    android:textColor="@android:color/black"
+                    android:paddingLeft="20dp"
 
-    <Button
-        android:id="@+id/requestButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="24dp"
-        android:onClick="request"
-        android:text="Request Blood"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contactTextView" />
+                    android:textSize="15sp"
+                    android:layout_alignBottom="@+id/image_password"
+                    android:background="@color/backgroundGreen"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/relativelayout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relativelayout3"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
+                <ImageView
+                    android:id="@+id/image_retypepassword"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@color/redColor"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_smartphone_black_24dp"/>
+                <TextView
+                    android:id="@+id/contactTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/image_retypepassword"
+                    android:layout_alignParentTop="true"
+                    android:textColor="@android:color/black"
 
-    <Button
-        android:id="@+id/callButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="24dp"
-        android:onClick="call"
-        android:text="Call(Emergency)"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/requestButton" />
-</android.support.constraint.ConstraintLayout>
+                    android:paddingLeft="20dp"
+                    android:textSize="15sp"
+                    android:layout_alignBottom="@+id/image_retypepassword"
+                    android:background="@color/backgroundGreen"
+                    />
+            </RelativeLayout>
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relativelayout4"
+                android:textColor="@android:color/black"
+                android:background="@color/redColor"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="30dp"
+                android:fontFamily="sans-serif-medium"
+                android:id="@+id/requestButton"
+                android:text="Request donor"
+                android:onClick="request"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/requestButton"
+                android:textColor="@android:color/black"
+                android:background="@color/redColor"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="sans-serif-medium"
+                android:id="@+id/callButton"
+                android:text="Call donor"
+                android:onClick="call"/>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+</RelativeLayout>
