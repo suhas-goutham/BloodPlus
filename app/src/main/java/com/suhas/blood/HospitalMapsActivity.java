@@ -444,4 +444,7 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
         }
     }
 
+
 }
+
+

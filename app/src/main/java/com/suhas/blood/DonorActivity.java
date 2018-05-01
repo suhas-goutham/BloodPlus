@@ -53,24 +53,26 @@ public class DonorActivity extends AppCompatActivity {
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             timer.cancel();
 
-            ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Request");
-            query.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
+            if(ParseUser.getCurrentUser()!=null) {
+                ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Request");
+                query.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
 
-            query.findInBackground(new FindCallback<ParseObject>() {
-                @Override
-                public void done(List<ParseObject> objects, ParseException e) {
-                    if (e == null) {
-                        if (objects.get(0).get("requestStatus").equals(false)) {
+                query.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> objects, ParseException e) {
+                        if (e == null) {
+                            if (objects.get(0).get("requestStatus").equals(false)) {
 
-                            Intent intent = new Intent(getApplicationContext(), DonorMapsActivity.class);
-                            startActivity(intent);
+                                Intent intent = new Intent(getApplicationContext(), DonorMapsActivity.class);
+                                startActivity(intent);
 
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Cannot donate now,please wait for a few days", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Cannot donate now,please wait for a few days", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(DonorActivity.this, R.style.Theme_AppCompat_Dialog);
 
@@ -391,6 +393,7 @@ public class DonorActivity extends AppCompatActivity {
         timer.cancel();
 
     }
+
 
     @Override
     public void onBackPressed() {
