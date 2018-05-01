@@ -267,8 +267,7 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
             }
         }
     }
-
-
+    
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
