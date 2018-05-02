@@ -139,7 +139,17 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
 
                                             LatLng user = new LatLng(ob.getParseGeoPoint("location").getLatitude(), ob.getParseGeoPoint("location").getLongitude());
 
-                                            mMap.addMarker(new MarkerOptions().position(user).title(ob.get("name").toString() + "(" + ob.get("blood_grp") + ")").snippet(ob.getUsername()));
+                                          //  mMap.addMarker(new MarkerOptions().position(user).title(ob.get("name").toString() + "(" + ob.get("blood_grp") + ")").snippet(ob.getUsername()));
+                                            if(ob.get("blood_grp").equals("O+ve")||ob.get("blood_grp").equals("O-ve"))
+                                                mMap.addMarker(new MarkerOptions().position(user).title(ob.get("name").toString() + "(" + ob.get("blood_grp") + ")").snippet(ob.getUsername()));
+                                            else if(ob.get("blood_grp").equals("A+ve")||ob.get("blood_grp").equals("A-ve"))
+                                                mMap.addMarker(new MarkerOptions().position(user).title(ob.get("name").toString() + "(" + ob.get("blood_grp") + ")").snippet(ob.getUsername()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                                            else if(ob.get("blood_grp").equals("B+ve")||ob.get("blood_grp").equals("B-ve"))
+                                                mMap.addMarker(new MarkerOptions().position(user).title(ob.get("name").toString() + "(" + ob.get("blood_grp") + ")").snippet(ob.getUsername()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                                            else if(ob.get("blood_grp").equals("AB+ve")||ob.get("blood_grp").equals("AB-ve"))
+                                                mMap.addMarker(new MarkerOptions().position(user).title(ob.get("name").toString() + "(" + ob.get("blood_grp") + ")").snippet(ob.getUsername()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
+
+
                                         }
 
                                     }
@@ -189,7 +199,15 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
                                     if(distance<10) {
                                         LatLng user = new LatLng(ob.getParseGeoPoint("location").getLatitude(), ob.getParseGeoPoint("location").getLongitude());
 
-                                        mMap.addMarker(new MarkerOptions().position(user).title(ob.get("name").toString() + "(" + ob.get("blood_grp") + ")").snippet(ob.getUsername()));
+                                        if(ob.get("blood_grp").equals("O+ve")||ob.get("blood_grp").equals("O-ve"))
+                                            mMap.addMarker(new MarkerOptions().position(user).title(ob.get("name").toString() + "(" + ob.get("blood_grp") + ")").snippet(ob.getUsername()));
+                                        else if(ob.get("blood_grp").equals("A+ve")||ob.get("blood_grp").equals("A-ve"))
+                                            mMap.addMarker(new MarkerOptions().position(user).title(ob.get("name").toString() + "(" + ob.get("blood_grp") + ")").snippet(ob.getUsername()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                                        else if(ob.get("blood_grp").equals("B+ve")||ob.get("blood_grp").equals("B-ve"))
+                                            mMap.addMarker(new MarkerOptions().position(user).title(ob.get("name").toString() + "(" + ob.get("blood_grp") + ")").snippet(ob.getUsername()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                                        else if(ob.get("blood_grp").equals("AB+ve")||ob.get("blood_grp").equals("AB-ve"))
+                                            mMap.addMarker(new MarkerOptions().position(user).title(ob.get("name").toString() + "(" + ob.get("blood_grp") + ")").snippet(ob.getUsername()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
+
                                     }
                                 }
                             }
@@ -267,7 +285,7 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
             }
         }
     }
-    
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;

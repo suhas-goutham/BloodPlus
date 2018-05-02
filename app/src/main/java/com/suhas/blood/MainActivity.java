@@ -44,7 +44,7 @@ import com.parse.SaveCallback;
                 Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
                 startActivity(intent);
             }
-        },3000);
+        },1000);
 // Remember that you should never show the action bar if the
 // status bar is hidden, so hide that too if necessary.
 
@@ -59,8 +59,8 @@ import com.parse.SaveCallback;
     }
 
      @Override
-     protected void onResume() {
-         super.onResume();
+     protected void onRestart() {
+         super.onRestart();
 
          View decorView = getWindow().getDecorView();
 // Hide the status bar.
@@ -75,7 +75,7 @@ import com.parse.SaveCallback;
                  Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
                  startActivity(intent);
              }
-         },3000);
+         },1000);
 // Remember that you should never show the action bar if the
 // status bar is hidden, so hide that too if necessary.
 
