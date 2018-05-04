@@ -397,12 +397,29 @@ public class DonorActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        ParseUser.getCurrentUser().logOut();
 
-        timer.cancel();
 
-        Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
-        startActivity(intent);
+        AlertDialog.Builder builder = new AlertDialog.Builder(DonorActivity.this,R.style.Theme_AppCompat_Dialog);
+
+        builder.setMessage("Are you sure you want to logout?")
+                .setTitle("Logout").
+                setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked OK button
+                        ParseUser.getCurrentUser().logOut();
+
+                        timer.cancel();
+
+                        Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
+                        startActivity(intent);
+
+                    }
+                }).
+                setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.i("Alert","cancelled");
+                    }
+                }).show();
+
     }
 }

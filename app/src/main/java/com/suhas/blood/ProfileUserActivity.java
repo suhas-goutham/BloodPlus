@@ -175,7 +175,7 @@ public class ProfileUserActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        //super.onBackPressed();
 
         Intent intent=new Intent(getApplicationContext(),HospitalMapsActivity.class);
         startActivity(intent);

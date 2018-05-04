@@ -62,14 +62,14 @@ public class DonorRegisterActivity extends AppCompatActivity implements /*View.O
 
     public void registerDonor(View view){
 
-        name_s=name.getText().toString();
-        email_s=email.getText().toString();
-        password_s1=password1.getText().toString();
-        password_s2=password2.getText().toString();
-        mobile_s=mobile.getText().toString();
-        blood_s=blood.getSelectedItem().toString();
-        age_s=age.getText().toString();
-        gender_s=gender.getSelectedItem().toString();
+        name_s=name.getText().toString().trim();
+        email_s=email.getText().toString().trim();
+        password_s1=password1.getText().toString().trim();
+        password_s2=password2.getText().toString().trim();
+        mobile_s=mobile.getText().toString().trim();
+        blood_s=blood.getSelectedItem().toString().trim();
+        age_s=age.getText().toString().trim();
+        gender_s=gender.getSelectedItem().toString().trim();
 
         int status=1;
 
@@ -226,7 +226,7 @@ public class DonorRegisterActivity extends AppCompatActivity implements /*View.O
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+       // super.onBackPressed();
 
         Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
         startActivity(intent);

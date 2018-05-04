@@ -57,11 +57,9 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+       // super.onBackPressed();
 
-        ParseUser.getCurrentUser().logOut();
-
-        Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
+        Intent intent=new Intent(getApplicationContext(),HospitalActivity.class);
         startActivity(intent);
     }
 

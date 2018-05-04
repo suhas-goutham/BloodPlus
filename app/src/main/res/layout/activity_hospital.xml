@@ -4,51 +4,51 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.suhas.blood.ProfileUserActivity">
+    tools:context="com.suhas.blood.HospitalActivity">
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="60dp"
-        android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginBottom="45dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="3dp"
         app:cardPreventCornerOverlap="false"
         app:cardUseCompatPadding="true"
-        >
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
+
             <LinearLayout
                 android:id="@+id/linearlayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:orientation="vertical"
                 android:background="@color/redColor"
                 android:gravity="center"
-                >
+                android:orientation="vertical">
+
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:padding="5dp"
                     android:src="@drawable/ic_content_paste_black_24dp"
-                    android:tint="@android:color/black"
-                    android:padding="5dp"/>
+                    android:tint="@android:color/black" />
+
                 <TextView
                     android:id="@+id/textViewHospital"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-
-                    android:text="PROFILE"
-                    android:layout_marginTop="3dp"
                     android:layout_marginBottom="10dp"
-                    android:textColor="@android:color/black"
+                    android:layout_marginTop="3dp"
                     android:fontFamily="sans-serif-medium"
-                    />
+                    android:text="HOSPITAL PROFILE"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
 
             </LinearLayout>
 
@@ -57,146 +57,138 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/linearlayout"
-                android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="30dp">
+
                 <ImageView
                     android:id="@+id/image_user"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:background="@color/redColor"
                     android:padding="8dp"
-                    android:src="@drawable/ic_person_pin_black_24dp"/>
+                    android:src="@drawable/ic_local_hospital_black_24dp" />
+
                 <TextView
-                    android:id="@+id/nameTextView"
+                    android:id="@+id/name1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/image_user"
+                    android:layout_alignBottom="@+id/image_user"
                     android:layout_alignParentTop="true"
                     android:textColor="@android:color/black"
-                    android:paddingLeft="20dp"
-                    android:textSize="15sp"
-                    android:inputType="textPersonName"
-                    android:layout_alignBottom="@+id/image_user"
+                    android:layout_toRightOf="@+id/image_user"
                     android:background="@color/backgroundGreen"
-                    />
+                    android:inputType="textPersonName"
+                    android:paddingLeft="20dp"
+                    android:textSize="15sp" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/relativelayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relativelayout1"
-                android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp">
+
                 <ImageView
                     android:id="@+id/img_email"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:background="@color/redColor"
                     android:padding="8dp"
-                    android:src="@drawable/ic_edit_black_24dp"/>
+                    android:src="@drawable/ic_mail_black_24dp" />
+
                 <TextView
-                    android:id="@+id/ageTextView"
+                    android:id="@+id/email1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/img_email"
+                    android:layout_alignBottom="@+id/img_email"
                     android:layout_alignParentTop="true"
                     android:textColor="@android:color/black"
-                    android:paddingLeft="20dp"
-                    android:textSize="15sp"
-
-                    android:layout_alignBottom="@+id/img_email"
+                    android:layout_toRightOf="@+id/img_email"
                     android:background="@color/backgroundGreen"
-                    />
+
+                    android:paddingLeft="20dp"
+                    android:textSize="15sp" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/relativelayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relativelayout2"
-                android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp">
+
                 <ImageView
                     android:id="@+id/image_password"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:background="@color/redColor"
                     android:padding="8dp"
-                    android:rotation="180"
-                    android:src="@drawable/ic_place_black_24dp"/>
+                    android:src="@drawable/ic_place_black_24dp" />
+
                 <TextView
-                    android:id="@+id/bloodTextView"
+                    android:id="@+id/city1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/image_password"
+                    android:layout_alignBottom="@+id/image_password"
                     android:layout_alignParentTop="true"
                     android:textColor="@android:color/black"
-                    android:paddingLeft="20dp"
+                    android:layout_toRightOf="@+id/image_password"
 
-                    android:textSize="15sp"
-                    android:layout_alignBottom="@+id/image_password"
                     android:background="@color/backgroundGreen"
-                    />
+                    android:paddingLeft="20dp"
+                    android:textSize="15sp" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/relativelayout4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relativelayout3"
-                android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp">
+
                 <ImageView
                     android:id="@+id/image_retypepassword"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:background="@color/redColor"
                     android:padding="8dp"
-                    android:src="@drawable/ic_smartphone_black_24dp"/>
+                    android:src="@drawable/ic_smartphone_black_24dp" />
+
                 <TextView
-                    android:id="@+id/contactTextView"
+                    android:id="@+id/contact1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/image_retypepassword"
+                    android:layout_alignBottom="@+id/image_retypepassword"
                     android:layout_alignParentTop="true"
                     android:textColor="@android:color/black"
 
-                    android:paddingLeft="20dp"
-                    android:textSize="15sp"
-                    android:layout_alignBottom="@+id/image_retypepassword"
+                    android:layout_toRightOf="@+id/image_retypepassword"
                     android:background="@color/backgroundGreen"
-                    />
+                    android:paddingLeft="20dp"
+                    android:textSize="15sp" />
             </RelativeLayout>
 
-
             <Button
+                android:id="@+id/button4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relativelayout4"
-                android:textColor="@android:color/black"
-                android:background="@color/redColor"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="30dp"
-                android:fontFamily="sans-serif-medium"
-                android:id="@+id/requestButton"
-                android:text="Request donor"
-                android:onClick="request"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/requestButton"
-                android:textColor="@android:color/black"
+                android:layout_marginTop="40dp"
                 android:background="@color/redColor"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="15dp"
                 android:fontFamily="sans-serif-medium"
-                android:id="@+id/callButton"
-                android:text="Call donor"
-                android:onClick="call"/>
+                android:onClick="goToHospital"
+                android:text="Donor Search"
+                android:textColor="@android:color/black" />
 
         </RelativeLayout>
 

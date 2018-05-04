@@ -55,12 +55,12 @@ public class HospitalRegisterActivity extends AppCompatActivity implements /*Vie
 
     public void registerHospital(View view){
 
-        name_s=nameH.getText().toString();
-        email_s=emailH.getText().toString();
-        password_s1=passwordH1.getText().toString();
-        password_s2=passwordH2.getText().toString();
-        mobile_s=mobileH.getText().toString();
-        city_s=cityH.getText().toString();
+        name_s=nameH.getText().toString().trim();
+        email_s=emailH.getText().toString().trim();
+        password_s1=passwordH1.getText().toString().trim();
+        password_s2=passwordH2.getText().toString().trim();
+        mobile_s=mobileH.getText().toString().trim();
+        city_s=cityH.getText().toString().trim()        ;
 
         int status=1;
 
@@ -182,7 +182,7 @@ public class HospitalRegisterActivity extends AppCompatActivity implements /*Vie
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+      //  super.onBackPressed();
 
         Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
         startActivity(intent);

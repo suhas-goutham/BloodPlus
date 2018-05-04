@@ -49,7 +49,7 @@ public class DonorMapsActivity extends FragmentActivity implements OnMapReadyCal
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+       // super.onBackPressed();
 
         Intent intent=new Intent(getApplicationContext(),DonorActivity.class);
         startActivity(intent);

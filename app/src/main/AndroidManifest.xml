@@ -25,6 +25,7 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -62,7 +63,8 @@
             android:name=".ProfileUserActivity"
             android:parentActivityName=".HospitalMapsActivity" />
         <activity android:name=".DonorActivity" />
-        <activity android:name=".Authentication_page"></activity>
+        <activity android:name=".Authentication_page" />
+        <activity android:name=".HospitalActivity"></activity>
     </application>
 
 </manifest>

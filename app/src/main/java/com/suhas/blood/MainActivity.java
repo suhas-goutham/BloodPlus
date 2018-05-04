@@ -44,7 +44,7 @@ import com.parse.SaveCallback;
                 Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
                 startActivity(intent);
             }
-        },1000);
+        },2000);
 // Remember that you should never show the action bar if the
 // status bar is hidden, so hide that too if necessary.
 
@@ -75,7 +75,7 @@ import com.parse.SaveCallback;
                  Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
                  startActivity(intent);
              }
-         },1000);
+         },2000);
 // Remember that you should never show the action bar if the
 // status bar is hidden, so hide that too if necessary.
 
@@ -84,7 +84,7 @@ import com.parse.SaveCallback;
 
      @Override
      public void onBackPressed() {
-         super.onBackPressed();
+        // super.onBackPressed();
 
          Intent intent = new Intent(Intent.ACTION_MAIN);
          intent.addCategory(Intent.CATEGORY_HOME);

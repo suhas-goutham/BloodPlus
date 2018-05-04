@@ -1,10 +1,12 @@
 package com.suhas.blood;
 
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.inputmethodservice.Keyboard;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
@@ -91,7 +93,7 @@ public class LoginActivity extends AppCompatActivity implements /*View.OnKeyList
                             startActivity(intent);
                         }else if(user.get("userType").equals("hospital") && userType.equals("hospital")){
                             Toast.makeText(getApplicationContext(), "Welcome," + user.get("name"), Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(getApplicationContext(), HospitalMapsActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), HospitalActivity.class);
                             intent.putExtra("intentType","login");
                             startActivity(intent);
                         }else{
@@ -184,11 +186,27 @@ public class LoginActivity extends AppCompatActivity implements /*View.OnKeyList
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        ParseUser.getCurrentUser().logOut();
+        //super.onBackPressed();
 
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        startActivity(intent);
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this,R.style.Theme_AppCompat_Dialog);
+
+        builder.setMessage("Are you sure you want to exit?")
+                .setTitle("Exit").
+                setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked OK button
+                        ParseUser.getCurrentUser().logOut();
+
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        startActivity(intent);
+                    }
+                }).
+                setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.i("Alert","cancelled");
+                    }
+                }).show();
+
     }
 }
