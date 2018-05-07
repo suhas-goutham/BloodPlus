@@ -41,7 +41,7 @@ public class StarterApplication extends Application {
 
                     .clientKey("ebdf6602399f412ed173c4be38720cd60ab9ce4b")
 
-                    .server("http://18.219.67.222:80/parse/")
+                    .server("http://13.59.33.21:80/parse/")
 
                     .build()
 
