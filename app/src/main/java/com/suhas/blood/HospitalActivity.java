@@ -133,6 +133,7 @@ public class HospitalActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
+
         AlertDialog.Builder builder = new AlertDialog.Builder(HospitalActivity.this,R.style.Theme_AppCompat_Dialog);
 
         builder.setMessage("Are you sure you want to logout?")

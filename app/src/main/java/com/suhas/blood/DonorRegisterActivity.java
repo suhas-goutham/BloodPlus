@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -30,6 +31,7 @@ import java.util.regex.Pattern;
 public class DonorRegisterActivity extends AppCompatActivity implements /*View.OnKeyListener*/View.OnClickListener {
 
     EditText name,email,password1,password2,mobile,age;
+    CheckBox checkBox;
     TextView signUp;
     String name_s,email_s,password_s1,password_s2,mobile_s,blood_s,age_s,gender_s;
     ConstraintLayout background;
@@ -118,6 +120,12 @@ public class DonorRegisterActivity extends AppCompatActivity implements /*View.O
             }
         }
 
+        if(checkBox.isChecked()==false){
+            Toast.makeText(getApplicationContext(),"Please tick the terms and conditions",Toast.LENGTH_SHORT).show();
+            status=0;
+        }
+
+
 
         if(status==1) {
             final ParseUser user = new ParseUser();
@@ -195,6 +203,7 @@ public class DonorRegisterActivity extends AppCompatActivity implements /*View.O
         gender=(Spinner) findViewById(R.id.genderSpinner);
         age=(EditText) findViewById(R.id.ageText);
         signUp=(TextView) findViewById(R.id.textViewSignin);
+        checkBox=(CheckBox) findViewById(R.id.checkbox_donor);
 
         CardView cardView=(CardView) findViewById(R.id.cardView2);
         RelativeLayout relativeLayout=(RelativeLayout) findViewById(R.id.relativeLayout2);
@@ -226,7 +235,7 @@ public class DonorRegisterActivity extends AppCompatActivity implements /*View.O
 
     @Override
     public void onBackPressed() {
-       // super.onBackPressed();
+        super.onBackPressed();
 
         Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
         startActivity(intent);

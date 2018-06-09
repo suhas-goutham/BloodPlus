@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import java.util.regex.Pattern;
 public class HospitalRegisterActivity extends AppCompatActivity implements /*View.OnKeyListener,*/ View.OnClickListener {
 
     EditText nameH,emailH,passwordH1,passwordH2,mobileH,cityH;
+    CheckBox checkBox1;
     String name_s,email_s,password_s1,password_s2,mobile_s,city_s;
     ConstraintLayout hospitalConstraint;
     TextView hospitalTextView;
@@ -74,7 +76,7 @@ public class HospitalRegisterActivity extends AppCompatActivity implements /*Vie
             status=0;
         }
 
-        if(!(password_s1.length()>6)){
+        if(!(password_s1.length()>=6)){
             Toast.makeText(getApplicationContext(),"Enter password of atleast 6 characters",Toast.LENGTH_SHORT).show();
             status=0;
         }
@@ -93,6 +95,12 @@ public class HospitalRegisterActivity extends AppCompatActivity implements /*Vie
             Toast.makeText(getApplicationContext(),"Enter correct city",Toast.LENGTH_SHORT).show();
             status=0;
         }
+
+        if(checkBox1.isChecked()==false){
+            Toast.makeText(getApplicationContext(),"Please tick the terms and conditions",Toast.LENGTH_SHORT).show();
+            status=0;
+        }
+
         if(status==1) {
             final ParseUser user = new ParseUser();
 
@@ -151,6 +159,7 @@ public class HospitalRegisterActivity extends AppCompatActivity implements /*Vie
         mobileH=(EditText) findViewById(R.id.mobileHText);
         cityH=(EditText) findViewById(R.id.cityHText);
         signIn=(TextView) findViewById(R.id.textViewSignin1);
+        checkBox1=(CheckBox) findViewById(R.id.checkbox_hosp);
 
         CardView cardView=(CardView) findViewById(R.id.cardView3);
         RelativeLayout relativeLayout=(RelativeLayout) findViewById(R.id.relativeLayout3);
@@ -182,7 +191,7 @@ public class HospitalRegisterActivity extends AppCompatActivity implements /*Vie
 
     @Override
     public void onBackPressed() {
-      //  super.onBackPressed();
+       super.onBackPressed();
 
         Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
         startActivity(intent);
