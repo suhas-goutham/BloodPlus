@@ -53,6 +53,8 @@ public class Authentication_page extends AppCompatActivity {
 
             if (ParseUser.getCurrentUser() != null) {
 
+
+
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("Request");
                 query.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
 
@@ -76,6 +78,16 @@ public class Authentication_page extends AppCompatActivity {
 
                                 Intent donorIntent = new Intent(android.content.Intent.ACTION_VIEW,
                                         Uri.parse("http://maps.google.com/maps?daddr=" + objects.get(0).getParseGeoPoint("hospitalGeoPoint").getLatitude() + "," + objects.get(0).getParseGeoPoint("hospitalGeoPoint").getLongitude()));
+
+/*new*/                         ParseObject ob=new ParseObject("DonorReady");
+
+                                ob.put("donor",ParseUser.getCurrentUser().getUsername());
+                                ob.put("donorName",ParseUser.getCurrentUser().get("name"));
+                                ob.put("blood_grp",ParseUser.getCurrentUser().get("blood_grp"));
+                                ob.put("hospital",objects.get(0).get("hospitalName"));
+                                ob.put("notified",false);
+
+/*end new*/                     ob.saveInBackground();
 
                                 startActivity(donorIntent);
 
