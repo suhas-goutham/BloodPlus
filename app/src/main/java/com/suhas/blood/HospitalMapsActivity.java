@@ -63,6 +63,8 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
         startActivity(intent);
     }
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -93,9 +95,11 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
                     Toast.makeText(getApplicationContext(),"Location is off",Toast.LENGTH_SHORT).show();
                 }
                 break;
-            default:break;
-        }
+            case android.R.id.home:
+                        onBackPressed();
+                        return true;
 
+            }
         return false;
     }
 
