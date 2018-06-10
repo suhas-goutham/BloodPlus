@@ -269,7 +269,7 @@ public class HospitalMapsActivity extends AppCompatActivity implements OnMapRead
                         });
 
 
-                        if (getIntent().getStringExtra("intentType").equals("filter")) {
+                        if (getIntent().getStringExtra("intentType")!=null && getIntent().getStringExtra("intentType").equals("filter")) {
                             Log.i("Intent", "Filter");
                             requestBlood();
                         } else {
